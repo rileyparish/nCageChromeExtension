@@ -2,7 +2,7 @@ var defaultOptions = {
     settings: {
         imageReplacement: {
             "enableImgReplace": true,
-            "imgReplaceProb": .03,
+            "imgReplaceProb": .01,
             "imgLibraryName": "nCage",
             "imgLibrary": ncageImages
         }
