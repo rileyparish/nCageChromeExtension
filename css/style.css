@@ -3,9 +3,12 @@
    width:80%;
    display:block;
    margin-right:auto;
-   margin-left:auto; 
+   margin-left:auto;
 }
 
+.ncHeader{
+    font-size: medium;
+}
 .ncCategory {
     border: 2px solid #ccc;
     padding:20px;
