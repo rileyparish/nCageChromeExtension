@@ -5,6 +5,10 @@
     "description": "Prank your friends and co-workers with this extension that will replace their webpage images as they browse the internet!",
     "version": "1.0.1",
     "manifest_version": 2,
+    "background": {
+        "scripts": ["openOptionsPage.js"],
+        "persistent": false
+    },
     "content_scripts": [
         {
             "matches": [
