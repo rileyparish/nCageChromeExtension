@@ -7,33 +7,46 @@
     <script src="rubberDuckImages.js"></script>
     <script src="animeGirlImages.js"></script>
     <script src="defaultOptions.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
-    <h1>Ncage+ Extension Options</h1>
-    <h2>Image Replacement</h2>
-    <label>
-        <input id="enableImageReplacement" type="checkbox" checked="true"> Enable Image Replacement
-    </label>
-    <br>
-    <label>Replacement Rate</label>
-    <input id="imgReplaceProb" type="number" min="0" max="100" value="10"> %
-    <br>
-    <label>Select a library of images to use:</label>
-    <select name="libs" id="imageLibrary">
-        <option value="nCage">Nicholas Cage</option>
-        <option value="rubberDucks">Rubber Ducks</option>
-        <option value="animeGirls">Anime Girls</option>
-        <option value="censored">Censored</option>
-      </select>
-    <br>
-    <!-- <label>
-        <input type="checkbox"> Enable Gradual Increase
-    </label>
-    <br>
-    <label>Daily Replacement Rate Increment</label>
-    <input type="number" min="0" max="100" value="3"> % -->
-    <div id="status"></div>
-    <button id="save">Save</button>
+<body class=ncBody>
+    <h1>Welcome to nCage+!</h1>
+    <h3>This is the options page, where you can specify how you would like the extension to behave.</h3>
+    <div class="ncCategory">
+        <h2>Image Replacement</h2>
+        <div class=ncOptionAttribute>
+            <label>Enable Image Replacement:</label>
+            <input id="enableImageReplacement" type="checkbox" checked="true"> 
+        </div>
+
+        <div class=ncOptionAttribute>
+            <label>Image Replacement Rate:</label>
+            <input id="imgReplaceProb" type="number" min="0" max="100" value="2"> %
+        </div>
+
+        <div class=ncOptionAttribute>
+        <label>Select a library of images to use:</label>
+            <select name="libs" id="imageLibrary">
+                <option value="nCage">Nicholas Cage</option>
+                <option value="rubberDucks">Rubber Ducks</option>
+                <option value="animeGirls">Anime Girls</option>
+                <option value="censored">Censored</option>
+            </select>
+        </div>
+        
+        <!-- <label>
+            <input type="checkbox"> Enable Gradual Increase
+        </label>
+        <br>
+        <label>Daily Replacement Rate Increment</label>
+        <input type="number" min="0" max="100" value="3"> % -->
+        <div id="ncStatus"></div>
+        <button class="ncSaveButton" id="saveImageOptions">Save Image Settings</button>
+    </div>
+    <div class="ncFooter">
+        <p>How was your experience? Do you have any funny stories to share? Feedback? Bug reports? Feature requests? <a href="https://chrome.google.com/webstore/detail/ncage%2B/blenoallcdijagcfhdbidjiimoandabh">Let me know!</a></p>
+    </div>
+
     <script src="options.js"></script>
 </body>
 </html>

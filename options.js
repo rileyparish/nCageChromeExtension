@@ -1,5 +1,5 @@
 // Saves options to chrome.storage
-function save_options() {
+function saveImageOptions() {
     var enableImageReplacement = document.getElementById('enableImageReplacement').checked;
     // retrieve the replacement percentage and convert it into a probability
     var imgReplaceProbability = document.getElementById('imgReplaceProb').value / 100;
@@ -34,7 +34,7 @@ function save_options() {
         }
     }, function() {
         // Update status to let user know options were saved.
-        var status = document.getElementById('status');
+        var status = document.getElementById('ncStatus');
         status.textContent = 'Options saved!';
         setTimeout(function() {
             status.textContent = '';
@@ -56,4 +56,4 @@ function restore_options() {
 
 document.addEventListener('DOMContentLoaded', restore_options);
 // listen for when the save button in settings is clicked.
-document.getElementById('save').addEventListener('click', save_options);
+document.getElementById('saveImageOptions').addEventListener('click', saveImageOptions);
