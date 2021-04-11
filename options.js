@@ -25,11 +25,16 @@ function saveImageOptions() {
     // the settings for the extension are stored as a json object
     chrome.storage.sync.set({
         settings: {
+            // TODO: remove hard-coded values here
             imageReplacement: {
                 "enableImgReplace": enableImageReplacement,
                 "imgReplaceProb": imgReplaceProbability,
                 "imgLibraryName": imgLibOption,
-                "imgLibrary": imgLib
+                "imgLibrary": imgLib,
+                "enableIncrement": true,
+                "incrementValue": .05,
+                "incrementInterval": 1000 * 60 * 3,
+                "lastUpdate": new Date().getTime()
             }
         }
     }, function() {

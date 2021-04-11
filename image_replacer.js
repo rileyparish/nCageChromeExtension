@@ -94,3 +94,16 @@ function shouldReplaceImg(){
     return rand <= imgReplaceProb;
 }
 
+
+
+
+/*
+Ok, so what I think I want here is a non-persistent background script
+I'll conditionally send a message to the background script, which will then activate and respond
+
+
+I should check every so often to see if it's time to update the replacement probability.
+
+I *could* do it within content scripts, but I don't know if that's good
+
+*/
