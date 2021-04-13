@@ -6,8 +6,8 @@ numImages = 0;
 // asynchronously get the probability that was set in the options page
 async function init() {
     var p = new Promise(function(resolve, reject){
-        // if nothing is set in storage yet, it will use the default options declared in defaultOptions.js
-        chrome.storage.sync.get({"settings": defaultOptions.settings}, function(data){
+        // get the options from Chrome storage. The default settings were loaded on installation.
+        chrome.storage.sync.get(["settings"], function(data){
             enableImgReplace = data.settings.imageReplacement.enableImgReplace;
             imgReplaceProb = data.settings.imageReplacement.imgReplaceProb;
             imgLib = data.settings.imageReplacement.imgLibrary;
@@ -31,8 +31,8 @@ function main() {
     // get an array of all the image elements
     // var allImages = document.getElementsByTagName("img");
     var allImages = document.images;
-    // loop though that array of image elements, skipping ones that have already been considered
-    for(var i=numImages; i<allImages.length; i++) {
+    // loop though that array of image elements, skipping images that have already been considered
+    for(var i = numImages; i < allImages.length; i++) {
         if(shouldReplaceImg()) {
             replaceImage(allImages[i]);
         }
@@ -93,17 +93,3 @@ function shouldReplaceImg(){
     // replace the image according to the probability set in the options page
     return rand <= imgReplaceProb;
 }
-
-
-
-
-/*
-Ok, so what I think I want here is a non-persistent background script
-I'll conditionally send a message to the background script, which will then activate and respond
-
-
-I should check every so often to see if it's time to update the replacement probability.
-
-I *could* do it within content scripts, but I don't know if that's good
-
-*/

@@ -7,8 +7,8 @@ var defaultOptions = {
             "imgLibrary": ncageImages,
             "enableIncrement": true,
             "incrementValue": 42,
-            "incrementInterval": 1000 * 60,
-            "lastUpdate": 1618113025191
+            "incrementInterval": 1000 * 60 * 2,
+            "lastUpdate": 1618341097344
         }
     }
 };

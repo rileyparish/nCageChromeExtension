@@ -6,10 +6,7 @@
     "version": "1.0.2",
     "manifest_version": 2,
     "background": {
-        "scripts": [
-            "openOptionsPage.js",
-            "incrementImageReplace.js"
-        ],
+        "page": "background.html",
         "persistent": false
     },
     "content_scripts": [
@@ -22,8 +19,7 @@
                 "ncageImages.js",
                 "rubberDuckImages.js",
                 "animeGirlImages.js",
-                "defaultOptions.js",
-                "image_replacer.js"
+                "imageReplacer.js"
             ],
             "run_at": "document_end"
         }
