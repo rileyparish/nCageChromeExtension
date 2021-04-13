@@ -7,7 +7,6 @@ chrome.runtime.onInstalled.addListener(() => {
     console.log("Creating alarm");
     // create alarm after extension is installed/upgraded
     // TODO: will existing alarms be destroyed upon upgrade?
-
     // load the default options into Chrome storage
     loadDefaultOptions();
 
@@ -16,6 +15,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 function loadDefaultOptions(){
+    // TODO: if there are existing settings, don't set default so we don't overwrite existing settings
     chrome.storage.sync.set({"settings": defaultOptions.settings}, function() {});
 }
   
@@ -29,13 +29,19 @@ async function updateImageReplace() {
     incrementValue = 0;
     incrementInterval = 0;
     lastUpdate = 0;
+    replacementProb = 0;
+    curSettings = {};
     
     // grab the most recent settings from Chrome storage
     var p = new Promise(function(resolve, reject){
         chrome.storage.sync.get(['settings'], function(data){
+            curSettings = data;
+            console.log("Current settings:");
+            console.log(curSettings);
             incrementValue = data.settings.imageReplacement.incrementValue;
             incrementInterval = data.settings.imageReplacement.incrementInterval;
             lastUpdate = data.settings.imageReplacement.lastUpdate;
+            replacementProb = data.settings.imageReplacement.imgReplaceProb;
             resolve();
         })
     });
@@ -45,8 +51,18 @@ async function updateImageReplace() {
     // if the difference between the current time and the last update is greater than the increment interval, update the value
     // should I update by the number of intervals that have elapsed, or just do one increment?
     if(new Date().getTime() - lastUpdate > incrementInterval){
-        //chrome.storage.sync.set
         console.log("time to update the replacement probability");
+        // calculate the new replacement probability and update the time
+        newProb = replacementProb + incrementValue;
+        if(newProb > 1){
+            newProb = 1;
+        }
+        curSettings.settings.imageReplacement.imgReplaceProb = newProb;
+        curSettings.settings.imageReplacement.lastUpdate = new Date().getTime();
+
+        // I can't save a specific item in an object, so just save the whole thing again
+        chrome.storage.sync.set({settings : curSettings.settings});
+ 
     }else{
         console.log("not updating the replacement prob")
     }
