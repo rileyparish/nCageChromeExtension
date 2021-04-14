@@ -22,7 +22,7 @@
 
         <div class=ncOptionAttribute>
             <label>Image Replacement Rate:</label>
-            <input id="imgReplaceProb" type="number" min="0" max="100" value="1"> <label>%</label> (I recommend somewhere around 1% for <i>moderate</i> subtlety. Seriously!)
+            <input class="ncShortInput" id="imgReplaceProb" type="number" min="0" max="100" value="1"> <label>%</label> (I recommend somewhere around 1% for <i>moderate</i> subtlety. Seriously!)
         </div>
 
         <div class=ncOptionAttribute>
@@ -34,13 +34,18 @@
                 <option value="censored">Censored</option>
             </select>
         </div>
+
+        <div class=ncOptionAttribute>
+            <label>Increase image replacement by</label>
+            <input class="ncShortInput" id="incrementValue" type="number" min="0" max="100" value="0">
+            <label>% every</label>
+            <select name="interval" id="incrementInterval">
+                <option value="3600000">Hour</option>
+                <option value="86400000">Day</option>
+                <option value="604800000">Week</option>
+            </select>
+        </div>
         
-        <!-- <label>
-            <input type="checkbox"> Enable Gradual Increase
-        </label>
-        <br>
-        <label>Daily Replacement Rate Increment</label>
-        <input type="number" min="0" max="100" value="3"> % -->
         <div id="ncStatus"></div>
         <button class="ncSaveButton" id="saveImageOptions">Save Image Settings</button>
     </div>

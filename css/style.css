@@ -19,6 +19,11 @@
     margin-top:0px;
 }
 
+.ncShortInput{
+    width:52px;
+    text-align: center;
+}
+
 .ncCategory .ncSaveButton{
     margin:10px;
     margin-left:0px;

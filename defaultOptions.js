@@ -5,10 +5,9 @@ var defaultOptions = {
             "imgReplaceProb": .01,
             "imgLibraryName": "nCage",
             "imgLibrary": ncageImages,
-            "enableIncrement": true,
-            "incrementValue": 42,
-            "incrementInterval": 1000 * 60 * 2,
-            "lastUpdate": 1618341097344
+            "incrementValue": 0,
+            "incrementInterval": 86400000,
+            "lastUpdate": 0
         }
     }
 };

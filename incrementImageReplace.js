@@ -3,19 +3,20 @@
 // so every n minutes I check if it's time to update image replacement yet.
 // also the default options are loaded into Chrome storage when the extension is first installed
 
-chrome.runtime.onInstalled.addListener(() => {
-    console.log("Creating alarm");
+chrome.runtime.onInstalled.addListener((object) => {
+    // clear all previous alarms (so we don't have multiple instances running at once)
+    chrome.alarms.clearAll();
+    
+    // load the default options into Chrome storage. Only if this is the first time though, so we don't overwrite user's existing settings
+    if(object.reason === 'install'){
+        loadDefaultOptions();
+    }
+    
     // create alarm after extension is installed/upgraded
-    // TODO: will existing alarms be destroyed upon upgrade?
-    // load the default options into Chrome storage
-    loadDefaultOptions();
-
-    // TODO: change this to run every few minutes instead of every minute
-    chrome.alarms.create('updateImageReplace', { periodInMinutes: 1 });
+    chrome.alarms.create('updateImageReplace', { periodInMinutes: 5 });
 });
 
 function loadDefaultOptions(){
-    // TODO: if there are existing settings, don't set default so we don't overwrite existing settings
     chrome.storage.sync.set({"settings": defaultOptions.settings}, function() {});
 }
   
@@ -36,8 +37,6 @@ async function updateImageReplace() {
     var p = new Promise(function(resolve, reject){
         chrome.storage.sync.get(['settings'], function(data){
             curSettings = data;
-            console.log("Current settings:");
-            console.log(curSettings);
             incrementValue = data.settings.imageReplacement.incrementValue;
             incrementInterval = data.settings.imageReplacement.incrementInterval;
             lastUpdate = data.settings.imageReplacement.lastUpdate;
@@ -52,7 +51,7 @@ async function updateImageReplace() {
     // should I update by the number of intervals that have elapsed, or just do one increment?
     if(new Date().getTime() - lastUpdate > incrementInterval){
         console.log("time to update the replacement probability");
-        // calculate the new replacement probability and update the time
+        // calculate the new replacement probability and update the time (and cap the probability at 1)
         newProb = replacementProb + incrementValue;
         if(newProb > 1){
             newProb = 1;
@@ -62,9 +61,6 @@ async function updateImageReplace() {
 
         // I can't save a specific item in an object, so just save the whole thing again
         chrome.storage.sync.set({settings : curSettings.settings});
- 
-    }else{
-        console.log("not updating the replacement prob")
     }
 
     // TODO: should I increment by the number of intervals that have elapsed? 
