@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener((object) => {
     // clear all previous alarms (so we don't have multiple instances running at once)
     chrome.alarms.clearAll();
     
-    // load the default options into Chrome storage. Only if this is the first time though, so we don't overwrite user's existing settings
+    // load the default options into Chrome storage. Only if this is the first time though, so we don't overwrite users' existing settings
     if(object.reason === 'install'){
         loadDefaultOptions();
     }
@@ -26,7 +26,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 });
   
 async function updateImageReplace() {
-    console.log("Checking if it's time to increment image replacement...");
     incrementValue = 0;
     incrementInterval = 0;
     lastUpdate = 0;
@@ -48,22 +47,20 @@ async function updateImageReplace() {
     await p;
 
     // if the difference between the current time and the last update is greater than the increment interval, update the value
-    // should I update by the number of intervals that have elapsed, or just do one increment?
     if(new Date().getTime() - lastUpdate > incrementInterval){
-        console.log("time to update the replacement probability");
+        // this approach isn't perfect, but it's a good balance between real time (increasing by incrementValue for every incrementInterval that passes), and active time (increasing by one incrementValue for every incrementInterval that the device is in use)
+
         // calculate the new replacement probability and update the time (and cap the probability at 1)
         newProb = replacementProb + incrementValue;
         if(newProb > 1){
             newProb = 1;
         }
+
+        console.log(`Updating replacement probability from ${replacementProb} to ${newProb} [${new Date()}]`);
         curSettings.settings.imageReplacement.imgReplaceProb = newProb;
         curSettings.settings.imageReplacement.lastUpdate = new Date().getTime();
 
         // I can't save a specific item in an object, so just save the whole thing again
         chrome.storage.sync.set({settings : curSettings.settings});
     }
-
-    // TODO: should I increment by the number of intervals that have elapsed? 
-    // There's a potential bug if, say, I update 1% every hour. What happens when they close the computer for the night?
-    // this code won't get called while the computer is sleeping, so I won't update
 }

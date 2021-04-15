@@ -52,14 +52,9 @@ function restoreOptions() {
     chrome.storage.sync.get(["settings"], function(data) {
         document.getElementById("enableImageReplacement").checked = data.settings.imageReplacement.enableImgReplace;
         document.getElementById("imageLibrary").value = data.settings.imageReplacement.imgLibraryName;
-        if(data.settings.imageReplacement.imgReplaceProb * 100 != parseInt(data.settings.imageReplacement.imgReplaceProb * 100)){
-            // this means that the PERCENTAGE is not an integer. Round to 2 decimal places
-            document.getElementById("imgReplaceProb").value = parseFloat(data.settings.imageReplacement.imgReplaceProb * 100).toFixed(2);
-        }else{
-            // otherwise, it's an integer so just display an integer
-            document.getElementById("imgReplaceProb").value = data.settings.imageReplacement.imgReplaceProb * 100;
-        }
-
+        replacementRate = data.settings.imageReplacement.imgReplaceProb;
+        // round to 4 decimal places and drop the extra zeros at the end
+        document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
         document.getElementById("incrementValue").value = data.settings.imageReplacement.incrementValue * 100;
         document.getElementById("incrementInterval").value = data.settings.imageReplacement.incrementInterval;
     });
