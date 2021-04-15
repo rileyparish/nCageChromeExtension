@@ -1,0 +1,12 @@
+<!--
+    So the way that this works is a little weird.
+    I have several scripts that I want to run in the background, and they need to be able to see each other.
+    It turns out that the scripts need to run in the context of a page in order to be visible to each other, so this background.html page only exists to include all the necessary start-up scripts like setting the default options and opening the options page.
+    Each of these scripts gets run automatically just by being included here.
+-->
+<script src="ncageImages.js"></script>
+<script src="rubberDuckImages.js"></script>
+<script src="animeGirlImages.js"></script>
+<script src="openOptionsPage.js"></script>
+<script src="defaultOptions.js"></script>
+<script src="incrementImageReplace.js"></script>
