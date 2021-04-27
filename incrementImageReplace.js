@@ -30,12 +30,14 @@ async function updateImageReplace() {
     incrementInterval = 0;
     lastUpdate = 0;
     replacementProb = 0;
+    isEnabled = false;
     curSettings = {};
     
     // grab the most recent settings from Chrome storage
     var p = new Promise(function(resolve, reject){
         chrome.storage.sync.get(['settings'], function(data){
             curSettings = data;
+            isEnabled = data.settings.imageReplacement.enableImgReplace;
             incrementValue = data.settings.imageReplacement.incrementValue;
             incrementInterval = data.settings.imageReplacement.incrementInterval;
             lastUpdate = data.settings.imageReplacement.lastUpdate;
@@ -47,7 +49,7 @@ async function updateImageReplace() {
     await p;
 
     // if the difference between the current time and the last update is greater than the increment interval, update the value
-    if(new Date().getTime() - lastUpdate > incrementInterval){
+    if(isEnabled && new Date().getTime() - lastUpdate > incrementInterval){
         // this approach isn't perfect, but it's a good balance between real time (increasing by incrementValue for every incrementInterval that passes), and active time (increasing by one incrementValue for every incrementInterval that the device is in use)
 
         // calculate the new replacement probability and update the time (and cap the probability at 1)
