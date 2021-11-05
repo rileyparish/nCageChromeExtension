@@ -48,13 +48,36 @@ function replaceImage(image){
         newSrc = getRandomImage();
         // this line uses CSS to keep the old size of the image (this is important if the original image doesn't have existing height and width attributes)
         // it scales and crops the replacement image to fit, and also sets the image content to be the replacement image
-        image.setAttribute("style", `height:${image.height}px; width:${image.width}px; object-fit:cover; content:url(${newSrc});`);
+
+        // note that image.height gets the native height of the image but image.clientHeight gets the height of the image as it's drawn on the screen. So this is the one I care about.
+        // image.setAttribute("style", `height:${image.clientHeight}px !important; width:${image.clientWidth}px !important; object-fit:cover; content:url(${newSrc});`);
+        // but it looks like it causes missing images on reddit sometimes. Hmm.
+        // but if I don't use the client attributes, the subreddit icon is huge sometimes. Using the client attributes seemed to fix that problem.
+        // I did come across a few instances where the clientHeight and clientWidth were 0 and the height/width were 256x256. So I'm not sure what to make of that.
+        newHeight = 0;
+        newWidth = 0;
+        console.log("ch/cw:", image.clientHeight, image.clientWidth);
+        console.log("c/w:", image.height, image.width);
+        console.log(image);
+        
+        // if the image has the client sizes, use those.
+        if(image.hasAttribute("clientHeight") && image.hasAttribute("clientWidth")){
+            // but this never gets called
+            console.log("using client attributes");
+            newHeight = image.clientHeight;
+            newWidth = image.clientWidth;
+        }else{
+            newHeight = image.height;
+            newWidth = image.width;
+        }
+        image.setAttribute("style", `height:${newHeight}px !important; width:${newWidth}px !important; object-fit:cover; content:url(${newSrc});`);
         // also set the image src attribute for good measure (though it doesn't appear to be strictly necessary)
         image.src = newSrc;
     }
 }
 
 function censorImage(image){
+    // this option doesn't work perfectly, but that's alright
     warnings = ["CENSORED", "REDACTED", "VIEWER DISCRETION ADVISED", "ADVISORY CONTENT", "CONTENT BLOCKED", "ADULT CONTENT", "RESTRICTED CONTENT"];
     scan = true;
     element = image;
