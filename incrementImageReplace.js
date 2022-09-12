@@ -3,6 +3,8 @@
 // so every n minutes I check if it's time to update image replacement yet.
 // also the default options are loaded into Chrome storage when the extension is first installed
 
+importScripts("defaultOptions.js");
+
 chrome.runtime.onInstalled.addListener((object) => {
     // clear all previous alarms (so we don't have multiple instances running at once)
     chrome.alarms.clearAll();

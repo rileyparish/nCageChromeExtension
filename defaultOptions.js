@@ -1,3 +1,5 @@
+importScripts("ncageImages.js");
+
 var defaultOptions = { 
     settings: {
         imageReplacement: {
