@@ -42,20 +42,23 @@ function main() {
 
 function replaceImage(image){
     // if the category is "censored" apply the CSS rules. Otherwise do normal image replacement
-    if(imgLib == "censored"){
+    if(imgLib === "censored"){
         censorImage(image);
     }else{
         newSrc = getRandomImage();
         // this line uses CSS to keep the old size of the image (this is important if the original image doesn't have existing height and width attributes)
         // it scales and crops the replacement image to fit, and also sets the image content to be the replacement image
-        image.setAttribute("style", `height:${image.height}px; width:${image.width}px; object-fit:cover; content:url(${newSrc});`);
+        // object-position:center;
+        image.setAttribute("style", `height:${image.height}px; width:${image.width}px; object-fit:cover; object-position:50% 35%; content:url(${newSrc});`);
+        // `object-fit:cover` specifies how an image should be resized to fit its container and prevents image distortion
+        // `object-position: horizontal vertical` specifies how the image should be centered if the replacement image is larger than the target image. 35% from the top is a decent average for the image sets.
         // also set the image src attribute for good measure (though it doesn't appear to be strictly necessary)
         image.src = newSrc;
     }
 }
 
 function censorImage(image){
-    warnings = ["CENSORED", "REDACTED", "VIEWER DISCRETION ADVISED", "ADVISORY CONTENT", "CONTENT BLOCKED", "ADULT CONTENT", "RESTRICTED CONTENT"];
+    warnings = ["CENSORED", "REDACTED", "VIEWER DISCRETION ADVISED", "ADVISORY CONTENT", "CONTENT BLOCKED", "ADULT CONTENT", "RESTRICTED CONTENT", "NSFW"];
     scan = true;
     element = image;
     while(scan){
