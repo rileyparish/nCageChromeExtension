@@ -1,35 +1,37 @@
 /*CSS for the options page */
-.ncBody{
-   width:60%;
-   display:block;
-   margin-right:auto;
-   margin-left:auto;
+.ncBody {
+    width: 60%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
 }
 
-.ncHeader{
+.ncHeader {
     font-size: medium;
 }
+
 .ncCategory {
     border: 2px solid #ccc;
-    padding:20px;
-    padding-top:10px;
+    padding: 20px;
+    padding-top: 10px;
     border-radius: 12px;
 }
-.ncCategory h2{
-    margin-top:0px;
+
+.ncCategory h2 {
+    margin-top: 0px;
 }
 
-.ncShortInput{
-    width:52px;
+.ncShortInput {
+    width: 52px;
     text-align: center;
 }
 
-.ncCategory .ncSaveButton{
-    margin:10px;
-    margin-left:0px;
+.ncCategory .ncSaveButton {
+    margin: 10px;
+    margin-left: 0px;
 
     /*background-color: #4CAF50; */
-    background-color:#406bdb;
+    background-color: #406bdb;
     border: none;
     color: white;
     padding: 15px 15px;
@@ -38,18 +40,17 @@
     display: inline-block;
     font-size: 16px;
     border-radius: 8px;
-
 }
 
-.ncCategory label{
-    font-size:medium;
+.ncCategory label {
+    font-size: medium;
 }
 
-.ncCategory .ncSaveButton:hover{
+.ncCategory .ncSaveButton:hover {
     background-color: #3960c4;
 }
 
-.ncCategory checkbox{
+.ncCategory checkbox {
     margin-left: 0px;
 }
 
@@ -57,33 +58,41 @@
     margin-top:5px;
     margin-bottom:5px;
 } */
-.ncCategory .ncOptionAttribute{
-    margin-top:5px;
-    margin-bottom:5px;
+.ncCategory .ncOptionAttribute {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
-.ncCategory:hover{
-    background:#f7f9ff;
+.ncCategory:hover {
+    background: #f7f9ff;
 }
 
-#ncStatus{
-    color:green;
+#ncStatus {
+    color: green;
 }
 
-.ncFooter{
-    position:absolute;
-    bottom:0;
-    width:80%;
-    text-align:center;
+.ncFooter {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: fit-content;
+    padding: 10px 20px;
+    margin-bottom: 25px;
 }
 
+.ncFooter p {
+    margin: 0;
+}
 
 /* CSS for censored image alteration */
-.ncCensoredContent{
+.ncCensoredContent {
     filter: blur(17px) !important;
-    opacity:.5 !important;
+    opacity: .5 !important;
 }
-.ncCensoredContainer{
+
+.ncCensoredContainer {
     /* background-color: rgba(0,0,0,1); */
     background: black !important;
     position: relative !important;
@@ -92,6 +101,7 @@
     overflow: hidden !important;
     word-wrap: normal !important;
 }
+
 .ncCensoredText {
     /* color: red; */
     visibility: visible !important;
