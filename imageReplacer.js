@@ -1,7 +1,7 @@
-enableImgReplace = false;
-imgReplaceProb = 0;
-imgLib = [];
-numImages = 0;
+let enableImgReplace = false;
+let imgReplaceProb = 0;
+let imgLib = [];
+let numImages = 0;
 
 // asynchronously get the probability that was set in the options page
 async function init() {
@@ -44,6 +44,12 @@ function replaceImage(image){
     // if the category is "censored" apply the CSS rules. Otherwise do normal image replacement
     if(imgLib === "censored"){
         censorImage(image);
+    }if(imgLib === "spinInPlace"){
+        // generate a random animation duration between .5s and 20s:
+        const animDur = Math.random() * (20 - 0.5) + 0.5;
+        const animDirection = Math.random() > .5 ? "normal" : "reverse";
+        // <name of CSS function> <duration to complete in seconds> <progression type> <number of times to run> <clockwise/counterclockwise>
+        image.style.animation = `ncRotate ${animDur}s linear infinite ${animDirection}`;
     }else{
         newSrc = getRandomImage();
         // this line uses CSS to keep the old size of the image (this is important if the original image doesn't have existing height and width attributes)

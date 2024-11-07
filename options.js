@@ -22,6 +22,9 @@ function saveImageOptions() {
         case "censored":
             imgLib = "censored";
             break;
+        case "spinInPlace":
+            imgLib = "spinInPlace";
+            break;
     }
 
     // the settings for the extension are stored as a json object
