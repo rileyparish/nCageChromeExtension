@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Ncage+ Options</title>
     <!-- It's important to load the image libraries here so options.js can have access to them -->
     <script src="ncageImages.js"></script>
     <script src="rubberDuckImages.js"></script>
     <script src="animeGirlImages.js"></script>
     <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 </head>
 <body class=ncBody>
     <h1>Welcome to nCage+!</h1>
     <p class="ncHeader">This is the options page, where you can specify how you would like the extension to behave.</p>
     <p class="ncHeader">You can go ahead and close this tab after you've set everything up. From here on out, the script will run on every webpage until the extension is disabled! You can always navigate back to this page from the extension settings.</p>
     <div class="ncCategory">
-        <h2>Image Replacement</h2>
+        <h2>Image Replacement Configuration</h2>
         <div class=ncOptionAttribute>
             <label>Enable Image Replacement:</label>
             <input id="enableImageReplacement" type="checkbox" checked="true"> 
@@ -21,18 +24,19 @@
 
         <div class=ncOptionAttribute>
             <label>Image Replacement Rate:</label>
-            <input class="ncShortInput" id="imgReplaceProb" type="number" min="0" max="100" value="1"> <label>%</label> (I recommend somewhere around 1% for <i>moderate</i> subtlety. Seriously!)
+            <input class="ncShortInput" id="imgReplaceProb" type="number" min="0" max="100" value="1"> <label>%</label><span class="helpText">(I recommend somewhere around 1% for <i>moderate</i> subtlety. Seriously!)</span>
         </div>
 
         <div class=ncOptionAttribute>
         <label>Select a library of images to use:</label>
-            <select name="libs" id="imageLibrary">
+            <select name="libs" id="imageLibrarySelection">
                 <option value="nCage">Nicolas Cage</option>
                 <option value="rubberDucks">Rubber Ducks</option>
                 <option value="animeGirls">Anime Girls</option>
                 <option value="censored">Censored</option>
-                <option value="spin">Spin in place</option>
+                <option value="spinInPlace">Spin in place</option>
             </select>
+            <span id="ncLibNotice" class="helpText"></span>
         </div>
 
         <div class=ncOptionAttribute>
@@ -47,8 +51,9 @@
         </div>
         
         <div id="ncStatus"></div>
-        <button class="ncSaveButton" id="saveImageOptions">Save Image Settings</button>
+        <button class="ncSaveButton" id="saveImageOptions"><span class="material-icons ncSaveButtonIcon">save</span><span class="ncSaveButtonText">Save Settings</span></button>
     </div>
+    <button class="ncCloseButton" id="ncCloseTabButton"><span class="material-icons ncCloseButtonIcon">close</span><span class="ncCloseButtonText">Close this tab ;)</span></button>
     <div class="ncFooter">
         <p>How was your experience? Do you have any funny stories to share? Feedback? Bug reports? Feature requests? <a href="https://chrome.google.com/webstore/detail/ncage%2B/blenoallcdijagcfhdbidjiimoandabh">Let me know!</a></p>
     </div>
