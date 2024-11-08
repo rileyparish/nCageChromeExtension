@@ -1,3 +1,5 @@
+let customImageLib = [];
+
 // Saves options to chrome.storage
 function saveImageOptions() {
     var enableImageReplacement = document.getElementById('enableImageReplacement').checked;
@@ -24,6 +26,12 @@ function saveImageOptions() {
             break;
         case "spinInPlace":
             imgLib = "spinInPlace";
+            break;
+        case "custom":
+            imgLib = customImageLib;
+            break;
+        default:
+            imgLib = ncageImages;
             break;
     }
 
@@ -74,6 +82,24 @@ function updateSelectionNotice(){
 function closeTab(){
     window.close();
 }
+
+function parseTextarea(){
+    // get the text and remove newlines and whitespace
+    let textareaContent = document.getElementById("ncTextareaContent").value.replace(/\n/g, "").trim();
+    const urlCandidates = textareaContent.split(',');
+
+    const urlRegex = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]{0,61}[a-zA-Z\d])?)\.)+[a-zA-Z]{2,}|((\d{1,3}\.){3}\d{1,3})|(\[[0-9a-fA-F:]+\]))(:\d+)?(\/[-a-zA-Z\d%_.~+]*)*(\?[;&a-zA-Z\d%_.~+=-]*)?(#[-a-zA-Z\d_]*)?$/;
+
+    // filter out items that don't match a URL regex
+    customImageLib = urlCandidates.filter(url => urlRegex.test(url));
+
+    if(customImageLib.length > 0){
+        document.getElementById("ncTextAreaNotice").style.color = "green";
+    }else{
+        document.getElementById("ncTextAreaNotice").style.color = "red";
+    }
+    document.getElementById("ncTextAreaNotice").textContent = `${customImageLib.length} valid urls extracted.`;
+}
   
 // Restores settings state using the preferences stored in chrome.storage.
 async function restoreOptions() {
@@ -99,4 +125,5 @@ document.getElementById('saveImageOptions').addEventListener('click', saveImageO
 // update library selection description
 document.getElementById('imageLibrarySelection').addEventListener('change', updateSelectionNotice);
 document.getElementById('ncCloseTabButton').addEventListener('click', closeTab);
+document.getElementById('ncTextareaContent').addEventListener('input', parseTextarea);
 

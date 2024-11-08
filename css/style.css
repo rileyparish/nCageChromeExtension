@@ -1,6 +1,6 @@
 /*CSS for the options page */
 .ncBody {
-    width: 60%;
+    width: 70%;
     display: block;
     margin-right: auto;
     margin-left: auto;
@@ -25,6 +25,15 @@
 .ncShortInput {
     width: 52px;
     text-align: center;
+}
+
+.ncUrlInput {
+    margin-left:50px;
+}
+
+#ncTextAreaNotice {
+    margin-left: 5px;
+    font-size: medium;
 }
 
 .ncCategory .ncSaveButton {

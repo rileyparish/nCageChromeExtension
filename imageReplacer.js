@@ -41,7 +41,7 @@ function main() {
 }
 
 function replaceImage(image){
-    // if the category is "censored" apply the CSS rules. Otherwise do normal image replacement
+    // if the category is "censored" apply the CSS rules
     if(imgLib === "censored"){
         censorImage(image);
     }if(imgLib === "spinInPlace"){
