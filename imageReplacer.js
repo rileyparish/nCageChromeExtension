@@ -46,10 +46,10 @@ function replaceImage(image){
         censorImage(image);
     }if(imgLib === "spinInPlace"){
         // generate a random animation duration between .5s and 20s:
-        const animDur = Math.random() * (20 - 0.5) + 0.5;
+        const animDuration = Math.random() * (20 - 0.5) + 0.5;
         const animDirection = Math.random() > .5 ? "normal" : "reverse";
         // <name of CSS function> <duration to complete in seconds> <progression type> <number of times to run> <clockwise/counterclockwise>
-        image.style.animation = `ncRotate ${animDur}s linear infinite ${animDirection}`;
+        image.style.animation = `ncRotate ${animDuration}s linear infinite ${animDirection}`;
     }else{
         newSrc = getRandomImage();
         // this line uses CSS to keep the old size of the image (this is important if the original image doesn't have existing height and width attributes)

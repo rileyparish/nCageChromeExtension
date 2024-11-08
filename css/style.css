@@ -54,7 +54,6 @@
     padding: 2px;
 }
 
-
 .ncCloseButton {
     margin-right: auto;
     margin-left: auto;
@@ -100,10 +99,6 @@
     margin-left: 0px;
 }
 
-/* .category input{
-    margin-top:5px;
-    margin-bottom:5px;
-} */
 .ncCategory .ncOptionAttribute {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -112,10 +107,8 @@
 .helpText {
     font-size: small;
     color:#d1a700;
-    /* font-style: italic; */
     margin-left: 10px;
 }
-
 
 .ncCategory:hover {
     background: #f7f9ff;
@@ -168,7 +161,6 @@
 }
 
 .ncCensoredText {
-    /* color: red; */
     visibility: visible !important;
     position: absolute !important;
     top: 50% !important;
