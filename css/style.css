@@ -14,6 +14,7 @@
     border: 2px solid #ccc;
     padding: 20px;
     padding-top: 10px;
+    padding-bottom: 10px;
     border-radius: 12px;
 }
 
@@ -29,17 +30,61 @@
 .ncCategory .ncSaveButton {
     margin: 10px;
     margin-left: 0px;
-
-    /*background-color: #4CAF50; */
     background-color: #406bdb;
     border: none;
-    color: white;
     padding: 15px 15px;
-    text-align: center;
-    text-decoration: none;
     display: inline-block;
-    font-size: 16px;
     border-radius: 8px;
+}
+
+.ncSaveButtonText {
+    text-decoration: none;
+    font-size: medium;
+    text-align: center;
+    color: white;
+    vertical-align: middle;
+    padding: 2px;
+}
+
+.ncSaveButtonIcon {
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    vertical-align: middle;
+    padding: 2px;
+}
+
+.ncCloseButton {
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    margin-top: 60px;
+    background-color: #db8484;
+    border: none;
+    padding: 40px 100px;
+    border-radius: 8px;
+}
+
+.ncCloseButtonText {
+    text-decoration: none;
+    font-size: x-large;
+    text-align: center;
+    color: white;
+    vertical-align: middle;
+    padding: 2px;
+}
+
+.ncCloseButtonIcon {
+    text-decoration: none;
+    font-size: 40px !important;
+    text-align: center;
+    color: white;
+    vertical-align: middle;
+    padding: 2px;
+}
+
+.ncCloseButton:hover {
+    background-color: #bd7171;
 }
 
 .ncCategory label {
@@ -54,13 +99,15 @@
     margin-left: 0px;
 }
 
-/* .category input{
-    margin-top:5px;
-    margin-bottom:5px;
-} */
 .ncCategory .ncOptionAttribute {
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+.helpText {
+    font-size: small;
+    color:#d1a700;
+    margin-left: 10px;
 }
 
 .ncCategory:hover {
@@ -68,6 +115,7 @@
 }
 
 #ncStatus {
+    height: 20px;
     color: green;
 }
 
@@ -86,6 +134,16 @@
     margin: 0;
 }
 
+/* CSS for image rotation */
+@keyframes ncRotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
 /* CSS for censored image alteration */
 .ncCensoredContent {
     filter: blur(17px) !important;
@@ -103,7 +161,6 @@
 }
 
 .ncCensoredText {
-    /* color: red; */
     visibility: visible !important;
     position: absolute !important;
     top: 50% !important;

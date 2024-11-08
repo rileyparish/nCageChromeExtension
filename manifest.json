@@ -3,7 +3,7 @@
     "options_page": "options.html",
     "permissions": ["storage", "alarms"],
     "description": "Prank your friends and co-workers with this extension that will replace their webpage images while they browse the internet!",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "manifest_version": 3,
     "background": {
         "service_worker": "incrementImageReplace.js"

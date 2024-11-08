@@ -6,7 +6,7 @@ function saveImageOptions() {
     var imgIncrementValue = document.getElementById('incrementValue').value / 100;
     var imgIncrementInterveral = document.getElementById('incrementInterval').value;
 
-    var imgLibOption = document.getElementById('imageLibrary').value;
+    var imgLibOption = document.getElementById('imageLibrarySelection').value;
     imgLib = [];
     // if you're adding a new image library, make sure to add it to options.html as well so options.js can see it
     switch(imgLibOption){
@@ -21,6 +21,9 @@ function saveImageOptions() {
             break;
         case "censored":
             imgLib = "censored";
+            break;
+        case "spinInPlace":
+            imgLib = "spinInPlace";
             break;
     }
 
@@ -46,20 +49,54 @@ function saveImageOptions() {
         }, 3000);
     });
 }
+
+function updateSelectionNotice(){
+    var imgLibOption = document.getElementById('imageLibrarySelection').value;
+    switch(imgLibOption){
+        case "nCage":
+            document.getElementById("ncLibNotice").textContent = "The finest selection of Nicolas Cage images on the interwebs!";
+            break;
+        case "rubberDucks":
+            document.getElementById("ncLibNotice").textContent = "Replace native images with (mostly) friendly rubber ducks!";
+            break;
+        case "animeGirls":
+            document.getElementById("ncLibNotice").textContent = "Cutesy-wootsy non-lewd waifus (✿^‿^)";
+            break;
+        case "censored":
+            document.getElementById("ncLibNotice").textContent = "Blurs webpage images and overlays a foreboding notice (this one's a little hit-and-miss :P ).";
+            break;
+        case "spinInPlace":
+            document.getElementById("ncLibNotice").textContent = "Retains native images but adds a spin animation with a randomized speed and direction.";
+            break;
+    }
+}
+
+function closeTab(){
+    window.close();
+}
   
 // Restores settings state using the preferences stored in chrome.storage.
-function restoreOptions() {
-    chrome.storage.sync.get(["settings"], function(data) {
-        document.getElementById("enableImageReplacement").checked = data.settings.imageReplacement.enableImgReplace;
-        document.getElementById("imageLibrary").value = data.settings.imageReplacement.imgLibraryName;
-        replacementRate = data.settings.imageReplacement.imgReplaceProb;
-        // round to 4 decimal places and drop the extra zeros at the end
-        document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
-        document.getElementById("incrementValue").value = data.settings.imageReplacement.incrementValue * 100;
-        document.getElementById("incrementInterval").value = data.settings.imageReplacement.incrementInterval;
+async function restoreOptions() {
+    var loadSettings = new Promise(function(resolve, reject){
+        chrome.storage.sync.get(["settings"], function(data) {
+            document.getElementById("enableImageReplacement").checked = data.settings.imageReplacement.enableImgReplace;
+            document.getElementById("imageLibrarySelection").value = data.settings.imageReplacement.imgLibraryName;
+            replacementRate = data.settings.imageReplacement.imgReplaceProb;
+            // round to 4 decimal places and drop the extra zeros at the end
+            document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
+            document.getElementById("incrementValue").value = data.settings.imageReplacement.incrementValue * 100;
+            document.getElementById("incrementInterval").value = data.settings.imageReplacement.incrementInterval;
+            resolve();
+        })
     });
+    await loadSettings;
+    updateSelectionNotice();
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
 // listen for when the save button in settings is clicked.
 document.getElementById('saveImageOptions').addEventListener('click', saveImageOptions);
+// update library selection description
+document.getElementById('imageLibrarySelection').addEventListener('change', updateSelectionNotice);
+document.getElementById('ncCloseTabButton').addEventListener('click', closeTab);
+
