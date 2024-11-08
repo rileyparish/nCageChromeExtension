@@ -63,7 +63,7 @@ function updateSelectionNotice(){
             document.getElementById("ncLibNotice").textContent = "Cutesy-wootsy non-lewd waifus (✿^‿^)";
             break;
         case "censored":
-            document.getElementById("ncLibNotice").textContent = "Blurs webpage images and overlays an ominous notice.";
+            document.getElementById("ncLibNotice").textContent = "Blurs webpage images and overlays a foreboding notice (this one's a little hit-and-miss :P ).";
             break;
         case "spinInPlace":
             document.getElementById("ncLibNotice").textContent = "Retains native images but adds a spin animation with a randomized speed and direction.";
