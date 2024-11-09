@@ -59,6 +59,9 @@ function saveImageOptions() {
 }
 
 function updateSelectionNotice(){
+    // hide the text area unless the "custom" option is selected
+    document.getElementById("ncUrlInputContainer").style.display = "none";
+
     var imgLibOption = document.getElementById('imageLibrarySelection').value;
     switch(imgLibOption){
         case "nCage":
@@ -76,6 +79,9 @@ function updateSelectionNotice(){
         case "spinInPlace":
             document.getElementById("ncLibNotice").textContent = "Retains native images but adds a spin animation with a randomized speed and direction.";
             break;
+        case "custom":
+            document.getElementById("ncLibNotice").textContent = "Create your own library with images of your choosing!";
+            document.getElementById("ncUrlInputContainer").style.display = "block";
     }
 }
 
@@ -106,7 +112,13 @@ async function restoreOptions() {
     var loadSettings = new Promise(function(resolve, reject){
         chrome.storage.sync.get(["settings"], function(data) {
             document.getElementById("enableImageReplacement").checked = data.settings.imageReplacement.enableImgReplace;
-            document.getElementById("imageLibrarySelection").value = data.settings.imageReplacement.imgLibraryName;
+            let imgLibName = data.settings.imageReplacement.imgLibraryName; 
+            document.getElementById("imageLibrarySelection").value = imgLibName;
+            // if this is the custom library, I need to populate the textarea with the contents saved in settings
+            if(imgLibName === "custom"){
+                populateTextArea(data.settings.imageReplacement.imgLibrary);
+            }
+            
             replacementRate = data.settings.imageReplacement.imgReplaceProb;
             // round to 4 decimal places and drop the extra zeros at the end
             document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
@@ -117,6 +129,15 @@ async function restoreOptions() {
     });
     await loadSettings;
     updateSelectionNotice();
+}
+
+function populateTextArea(urlList){
+    let text = "";
+    urlList.forEach(url => {
+        text = text.concat(url + ",\n");
+    });
+    document.getElementById("ncTextareaContent").textContent = text;
+    parseTextarea();
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
