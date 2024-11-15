@@ -1,52 +1,58 @@
-let customImageLib = [];
+// init from chrome storage on page load, updated when changes are made to the textarea, but only saved to storage when the save button is clicked
+var curSessionCustomImages = [];
 
 // Saves options to chrome.storage
-function saveImageOptions() {
-    var enableImageReplacement = document.getElementById('enableImageReplacement').checked;
-    // retrieve the replacement percentage and convert it into a probability
-    var imgReplaceProbability = document.getElementById('imgReplaceProb').value / 100;
-    var imgIncrementValue = document.getElementById('incrementValue').value / 100;
-    var imgIncrementInterveral = document.getElementById('incrementInterval').value;
+async function saveImageOptions() {
+    // get the current settings in storage
+    let settingsToSave = {};
+    var p = new Promise(function(resolve, reject){
+        chrome.storage.sync.get(['settings'], function(data){
+            settingsToSave = data.settings.imageReplacement;
+            resolve();
+        })
+    });
+    // wait for the data to load
+    await p;
 
-    var imgLibOption = document.getElementById('imageLibrarySelection').value;
-    imgLib = [];
+    // update the settings based on the contents of the UI
+    settingsToSave.enableImgReplace = document.getElementById('enableImageReplacement').checked;
+    settingsToSave.imgReplaceProb = document.getElementById('imgReplaceProb').value / 100;
+    settingsToSave.imgLibraryName = document.getElementById('imageLibrarySelection').value;
+    settingsToSave.incrementValue = document.getElementById('incrementValue').value / 100;
+    settingsToSave.incrementInterval = document.getElementById('incrementInterval').value;
+    settingsToSave.lastUpdate = new Date().getTime();
+
     // if you're adding a new image library, make sure to add it to options.html as well so options.js can see it
-    switch(imgLibOption){
+    switch(settingsToSave.imgLibraryName){
         case "nCage":
-            imgLib = ncageImages;
+            settingsToSave.imgLibrary = ncageImages;
             break;
         case "rubberDucks":
-            imgLib = rubberDuckImages;
+            settingsToSave.imgLibrary = rubberDuckImages;
             break;
         case "animeGirls":
-            imgLib = animeGirlImages;
+            settingsToSave.imgLibrary = animeGirlImages;
             break;
         case "censored":
-            imgLib = "censored";
+            settingsToSave.imgLibrary = "censored";
             break;
         case "spinInPlace":
-            imgLib = "spinInPlace";
+            settingsToSave.imgLibrary = "spinInPlace";
             break;
         case "custom":
-            imgLib = customImageLib;
+            settingsToSave.imgLibrary = curSessionCustomImages;
+            // this way the custom list always gets preserved in settings
+            settingsToSave.customImageLibrary = curSessionCustomImages;
             break;
         default:
-            imgLib = ncageImages;
+            settingsToSave.imgLibrary = ncageImages;
             break;
     }
 
-    // the settings for the extension are stored as a json object
+    // save the new settings in storage
     chrome.storage.sync.set({
         settings: {
-            imageReplacement: {
-                "enableImgReplace": enableImageReplacement,
-                "imgReplaceProb": imgReplaceProbability,
-                "imgLibraryName": imgLibOption,
-                "imgLibrary": imgLib,
-                "incrementValue": imgIncrementValue,
-                "incrementInterval": imgIncrementInterveral,
-                "lastUpdate": new Date().getTime()
-            }
+            imageReplacement: settingsToSave
         }
     }, function() {
         // display a message to let the user know that the options were saved
@@ -58,31 +64,33 @@ function saveImageOptions() {
     });
 }
 
+// updates the selection description and
 function updateSelectionNotice(){
-    // hide the text area unless the "custom" option is selected
-    document.getElementById("ncUrlInputContainer").style.display = "none";
-
-    var imgLibOption = document.getElementById('imageLibrarySelection').value;
+    let imgLibOption = document.getElementById('imageLibrarySelection').value;
+    let noticeText = "";
     switch(imgLibOption){
         case "nCage":
-            document.getElementById("ncLibNotice").textContent = "The finest selection of Nicolas Cage images on the interwebs!";
+            noticeText = "The finest selection of Nicolas Cage images on the interwebs!";
             break;
         case "rubberDucks":
-            document.getElementById("ncLibNotice").textContent = "Replace native images with (mostly) friendly rubber ducks!";
+            noticeText = "Replace native images with (mostly) friendly rubber ducks!";
             break;
         case "animeGirls":
-            document.getElementById("ncLibNotice").textContent = "Cutesy-wootsy non-lewd waifus (✿^‿^)";
+            noticeText = "Cutesy-wootsy non-lewd waifus (✿^‿^)";
             break;
         case "censored":
-            document.getElementById("ncLibNotice").textContent = "Blurs webpage images and overlays a foreboding notice (this one's a little hit-and-miss :P ).";
+            noticeText = "Blurs webpage images and overlays a foreboding notice (this one's a little hit-and-miss :P ).";
             break;
         case "spinInPlace":
-            document.getElementById("ncLibNotice").textContent = "Retains native images but adds a spin animation with a randomized speed and direction.";
+            noticeText = "Retains native images but adds a spin animation with a randomized speed and direction.";
             break;
         case "custom":
-            document.getElementById("ncLibNotice").textContent = "Create your own library with images of your choosing!";
-            document.getElementById("ncUrlInputContainer").style.display = "block";
+            noticeText = "Create your own library using whatever images you want!";
+            populateTextArea(curSessionCustomImages);
     }
+    document.getElementById("ncLibNotice").textContent = noticeText;
+    // hide the text area unless the "custom" option is selected
+    document.getElementById("ncUrlInputContainer").style.display = imgLibOption === "custom" ? "block" : "none";
 }
 
 function closeTab(){
@@ -97,14 +105,10 @@ function parseTextarea(){
     const urlRegex = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]{0,61}[a-zA-Z\d])?)\.)+[a-zA-Z]{2,}|((\d{1,3}\.){3}\d{1,3})|(\[[0-9a-fA-F:]+\]))(:\d+)?(\/[-a-zA-Z\d%_.~+]*)*(\?[;&a-zA-Z\d%_.~+=-]*)?(#[-a-zA-Z\d_]*)?$/;
 
     // filter out items that don't match a URL regex
-    customImageLib = urlCandidates.filter(url => urlRegex.test(url));
+    curSessionCustomImages = urlCandidates.filter(url => urlRegex.test(url));
 
-    if(customImageLib.length > 0){
-        document.getElementById("ncTextAreaNotice").style.color = "green";
-    }else{
-        document.getElementById("ncTextAreaNotice").style.color = "red";
-    }
-    document.getElementById("ncTextAreaNotice").textContent = `${customImageLib.length} valid urls extracted.`;
+    document.getElementById("ncTextAreaNotice").style.color = curSessionCustomImages.length > 0 ? "green" : "red";
+    document.getElementById("ncTextAreaNotice").textContent = `${curSessionCustomImages.length} valid urls extracted.`;
 }
   
 // Restores settings state using the preferences stored in chrome.storage.
@@ -114,11 +118,8 @@ async function restoreOptions() {
             document.getElementById("enableImageReplacement").checked = data.settings.imageReplacement.enableImgReplace;
             let imgLibName = data.settings.imageReplacement.imgLibraryName; 
             document.getElementById("imageLibrarySelection").value = imgLibName;
-            // if this is the custom library, I need to populate the textarea with the contents saved in settings
-            if(imgLibName === "custom"){
-                populateTextArea(data.settings.imageReplacement.imgLibrary);
-            }
-            
+            // set the session's custom image library on page load
+            curSessionCustomImages = data.settings.imageReplacement.customImageLibrary;            
             replacementRate = data.settings.imageReplacement.imgReplaceProb;
             // round to 4 decimal places and drop the extra zeros at the end
             document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
@@ -128,6 +129,7 @@ async function restoreOptions() {
         })
     });
     await loadSettings;
+    // update the UI appearance based on the state of current settings
     updateSelectionNotice();
 }
 
@@ -139,12 +141,14 @@ function populateTextArea(urlList){
     document.getElementById("ncTextareaContent").textContent = text;
     parseTextarea();
 }
-
+// populate UI with the settings stored in chrome on page load
 document.addEventListener('DOMContentLoaded', restoreOptions);
 // listen for when the save button in settings is clicked.
 document.getElementById('saveImageOptions').addEventListener('click', saveImageOptions);
 // update library selection description
 document.getElementById('imageLibrarySelection').addEventListener('change', updateSelectionNotice);
 document.getElementById('ncCloseTabButton').addEventListener('click', closeTab);
+// parse textarea and store valid URLs in curSessionCustomImages
 document.getElementById('ncTextareaContent').addEventListener('input', parseTextarea);
 
+// TODO: test to make sure nothing breaks on installation!!

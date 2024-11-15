@@ -10,6 +10,8 @@ chrome.runtime.onInstalled.addListener((object) => {
     chrome.alarms.clearAll();
     
     // load the default options into Chrome storage. Only if this is the first time though, so we don't overwrite users' existing settings
+    // TODO: this also triggers when the user signs into a new browser instance
+    // could maybe prevent by checking if there are existing settings...
     if(object.reason === 'install'){
         loadDefaultOptions();
 
@@ -67,6 +69,7 @@ async function updateImageReplace() {
         curSettings.settings.imageReplacement.imgReplaceProb = newProb;
         curSettings.settings.imageReplacement.lastUpdate = new Date().getTime();
 
+        // this is how to do it
         // I can't save a specific item in an object, so just save the whole thing again
         chrome.storage.sync.set({settings : curSettings.settings});
     }
