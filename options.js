@@ -90,7 +90,7 @@ function updateSelectionNotice() {
     }
     document.getElementById("ncLibNotice").textContent = noticeText;
     // hide the text area unless the "custom" option is selected
-    document.getElementById("ncUrlInputContainer").style.display = imgLibOption === "custom" ? "block" : "none";
+    document.getElementById("ncUrlInputContainer").style.display = imgLibOption === "custom" ? "flex" : "none";
 }
 
 function closeTab() {
@@ -109,6 +109,15 @@ function parseTextarea() {
 
     document.getElementById("ncTextAreaNotice").style.color = curSessionCustomImages.length > 0 ? "green" : "red";
     document.getElementById("ncTextAreaNotice").textContent = `${curSessionCustomImages.length} valid urls extracted.`;
+
+    updateTestImage(curSessionCustomImages[curSessionCustomImages.length - 1]);
+}
+
+// change the test image src to verify that an image can be retrieved from the custom url
+function updateTestImage(newSrc) {
+    let testImage = document.getElementById("ncTestImg");
+    // this is the same replacement logic used in imageReplacer.js
+    testImage.setAttribute("style", `height:${testImage.height}px; width:${testImage.width}px; object-fit:cover; object-position:50% 35%; content:url(${newSrc});`);
 }
 
 // Restores settings state using the preferences stored in chrome.storage.
@@ -131,6 +140,7 @@ async function restoreOptions() {
     await loadSettings;
     // update the UI appearance based on the state of current settings
     updateSelectionNotice();
+    updateTestImage(curSessionCustomImages[curSessionCustomImages.length - 1]);
 }
 
 function populateTextArea(urlList) {
@@ -139,7 +149,6 @@ function populateTextArea(urlList) {
         text = text.concat(url + ",\n");
     });
     document.getElementById("ncTextareaContent").textContent = text;
-    parseTextarea();
 }
 // populate UI with the settings stored in chrome on page load
 document.addEventListener('DOMContentLoaded', restoreOptions);

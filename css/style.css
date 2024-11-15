@@ -28,7 +28,11 @@
 }
 
 .ncUrlInput {
-    margin-left:50px;
+    margin-left: 50px;
+}
+
+.ncUrlInput p{
+    margin-top: 0px;
 }
 
 #ncTextAreaNotice {
@@ -46,6 +50,27 @@
     border-radius: 8px;
 }
 
+.ncFlexContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ncLeftColumn {
+    flex: 2;
+}
+
+.ncRightCol {
+    /* center the image within the right column */
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#ncTestImg {
+    height: 200px;
+    width: 200px;
+}
 .ncSaveButtonText {
     text-decoration: none;
     font-size: medium;
@@ -115,7 +140,7 @@
 
 .helpText {
     font-size: small;
-    color:#d1a700;
+    color: #d1a700;
     margin-left: 10px;
 }
 
@@ -146,12 +171,13 @@
 /* CSS for image rotation */
 @keyframes ncRotate {
     from {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
+
     to {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
+}
 
 /* CSS for censored image alteration */
 .ncCensoredContent {

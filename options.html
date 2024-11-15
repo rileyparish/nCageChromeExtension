@@ -45,16 +45,21 @@
             <span id="ncLibNotice" class="helpText"></span>
         </div>
 
-        <div class="ncUrlInput" id="ncUrlInputContainer">
-            <p>This option will allow you to create a selection of images of your choosing, but it will take some
-                preparation.<br />
-                All you'll need is a list of publicly accessible URLs of the images you want to use (simpler URLs are
-                more likely to work).<br />
-                These can be images that you uploaded to the internet yourself, or images that others have
-                uploaded.<br />
-                Paste them below in a comma-separated list. With great power comes great responsibility!</p>
-            <textarea id="ncTextareaContent" rows="8" cols="60"></textarea>
-            <p id="ncTextAreaNotice"></p>
+        <div class="ncFlexContainer" id="ncUrlInputContainer">
+            <div class="ncUrlInput ncLeftColumn">
+                <p>This option will allow you to create a selection of images of your choosing, but it will take some
+                    preparation.<br />
+                    All you'll need is a list of publicly accessible URLs of the images you want to use (simpler URLs are
+                    more likely to work).<br />
+                    These can be images that you uploaded to the internet yourself, or images that others have
+                    uploaded.<br />
+                    Paste them below in a comma-separated list. With great power comes great responsibility!</p>
+                <textarea id="ncTextareaContent" rows="8" cols="60"></textarea>
+                <div id="ncTextAreaNotice"></div>
+            </div>
+            <div class="ncColumn ncRightCol">
+                <img id="ncTestImg" src="/images/replacementTester.jpg">
+            </div>
         </div>
 
         <div class=ncOptionAttribute>
