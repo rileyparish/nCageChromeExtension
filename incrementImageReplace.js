@@ -8,30 +8,30 @@ importScripts("defaultOptions.js");
 chrome.runtime.onInstalled.addListener((object) => {
     // clear all previous alarms (so we don't have multiple instances running at once)
     chrome.alarms.clearAll();
-    
+
     // load the default options into Chrome storage. Only if this is the first time though, so we don't overwrite users' existing settings
     // TODO: this also triggers when the user signs into a new browser instance
     // could maybe prevent by checking if there are existing settings...
-    if(object.reason === 'install'){
+    if (object.reason === 'install') {
         loadDefaultOptions();
 
         // also open the options page for them on installation:
-        chrome.tabs.create({url: "chrome-extension://blenoallcdijagcfhdbidjiimoandabh/options.html"}, function (tab) {});
+        chrome.tabs.create({ url: "chrome-extension://blenoallcdijagcfhdbidjiimoandabh/options.html" }, function (tab) { });
     }
-    
+
     // create alarm after extension is installed/upgraded
     chrome.alarms.create('updateImageReplace', { periodInMinutes: 5 });
 });
 
-function loadDefaultOptions(){
-    chrome.storage.sync.set({"settings": defaultOptions.settings}, function() {});
+function loadDefaultOptions() {
+    chrome.storage.sync.set({ "settings": defaultOptions.settings }, function () { });
 }
-  
+
 chrome.alarms.onAlarm.addListener((alarm) => {
     // console.log(alarm.name);
     updateImageReplace();
 });
-  
+
 async function updateImageReplace() {
     incrementValue = 0;
     incrementInterval = 0;
@@ -39,10 +39,10 @@ async function updateImageReplace() {
     replacementProb = 0;
     isEnabled = false;
     curSettings = {};
-    
+
     // grab the most recent settings from Chrome storage
-    var p = new Promise(function(resolve, reject){
-        chrome.storage.sync.get(['settings'], function(data){
+    var p = new Promise(function (resolve, reject) {
+        chrome.storage.sync.get(['settings'], function (data) {
             curSettings = data;
             isEnabled = data.settings.imageReplacement.enableImgReplace;
             incrementValue = data.settings.imageReplacement.incrementValue;
@@ -56,12 +56,12 @@ async function updateImageReplace() {
     await p;
 
     // if the difference between the current time and the last update is greater than the increment interval, update the value
-    if(isEnabled && new Date().getTime() - lastUpdate > incrementInterval){
+    if (isEnabled && new Date().getTime() - lastUpdate > incrementInterval) {
         // this approach isn't perfect, but it's a good balance between real time (increasing by incrementValue for every incrementInterval that passes), and active time (increasing by one incrementValue for every incrementInterval that the device is in use)
 
         // calculate the new replacement probability and update the time (and cap the probability at 1)
         newProb = replacementProb + incrementValue;
-        if(newProb > 1){
+        if (newProb > 1) {
             newProb = 1;
         }
 
@@ -71,6 +71,6 @@ async function updateImageReplace() {
 
         // this is how to do it
         // I can't save a specific item in an object, so just save the whole thing again
-        chrome.storage.sync.set({settings : curSettings.settings});
+        chrome.storage.sync.set({ settings: curSettings.settings });
     }
 }

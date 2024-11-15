@@ -1,6 +1,6 @@
 importScripts("ncageImages.js");
 
-var defaultOptions = { 
+var defaultOptions = {
     settings: {
         imageReplacement: {
             "enableImgReplace": true,

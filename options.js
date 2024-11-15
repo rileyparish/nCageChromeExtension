@@ -5,8 +5,8 @@ var curSessionCustomImages = [];
 async function saveImageOptions() {
     // get the current settings in storage
     let settingsToSave = {};
-    var p = new Promise(function(resolve, reject){
-        chrome.storage.sync.get(['settings'], function(data){
+    var p = new Promise(function (resolve, reject) {
+        chrome.storage.sync.get(['settings'], function (data) {
             settingsToSave = data.settings.imageReplacement;
             resolve();
         })
@@ -23,7 +23,7 @@ async function saveImageOptions() {
     settingsToSave.lastUpdate = new Date().getTime();
 
     // if you're adding a new image library, make sure to add it to options.html as well so options.js can see it
-    switch(settingsToSave.imgLibraryName){
+    switch (settingsToSave.imgLibraryName) {
         case "nCage":
             settingsToSave.imgLibrary = ncageImages;
             break;
@@ -54,21 +54,21 @@ async function saveImageOptions() {
         settings: {
             imageReplacement: settingsToSave
         }
-    }, function() {
+    }, function () {
         // display a message to let the user know that the options were saved
         var status = document.getElementById('ncStatus');
         status.textContent = 'Options saved!';
-        setTimeout(function() {
+        setTimeout(function () {
             status.textContent = '';
         }, 3000);
     });
 }
 
 // updates the selection description and
-function updateSelectionNotice(){
+function updateSelectionNotice() {
     let imgLibOption = document.getElementById('imageLibrarySelection').value;
     let noticeText = "";
-    switch(imgLibOption){
+    switch (imgLibOption) {
         case "nCage":
             noticeText = "The finest selection of Nicolas Cage images on the interwebs!";
             break;
@@ -93,11 +93,11 @@ function updateSelectionNotice(){
     document.getElementById("ncUrlInputContainer").style.display = imgLibOption === "custom" ? "block" : "none";
 }
 
-function closeTab(){
+function closeTab() {
     window.close();
 }
 
-function parseTextarea(){
+function parseTextarea() {
     // get the text and remove newlines and whitespace
     let textareaContent = document.getElementById("ncTextareaContent").value.replace(/\n/g, "").trim();
     const urlCandidates = textareaContent.split(',');
@@ -110,16 +110,16 @@ function parseTextarea(){
     document.getElementById("ncTextAreaNotice").style.color = curSessionCustomImages.length > 0 ? "green" : "red";
     document.getElementById("ncTextAreaNotice").textContent = `${curSessionCustomImages.length} valid urls extracted.`;
 }
-  
+
 // Restores settings state using the preferences stored in chrome.storage.
 async function restoreOptions() {
-    var loadSettings = new Promise(function(resolve, reject){
-        chrome.storage.sync.get(["settings"], function(data) {
+    var loadSettings = new Promise(function (resolve, reject) {
+        chrome.storage.sync.get(["settings"], function (data) {
             document.getElementById("enableImageReplacement").checked = data.settings.imageReplacement.enableImgReplace;
-            let imgLibName = data.settings.imageReplacement.imgLibraryName; 
+            let imgLibName = data.settings.imageReplacement.imgLibraryName;
             document.getElementById("imageLibrarySelection").value = imgLibName;
             // set the session's custom image library on page load
-            curSessionCustomImages = data.settings.imageReplacement.customImageLibrary;            
+            curSessionCustomImages = data.settings.imageReplacement.customImageLibrary;
             replacementRate = data.settings.imageReplacement.imgReplaceProb;
             // round to 4 decimal places and drop the extra zeros at the end
             document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
@@ -133,7 +133,7 @@ async function restoreOptions() {
     updateSelectionNotice();
 }
 
-function populateTextArea(urlList){
+function populateTextArea(urlList) {
     let text = "";
     urlList.forEach(url => {
         text = text.concat(url + ",\n");

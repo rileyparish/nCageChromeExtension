@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Ncage+ Options</title>
@@ -8,27 +9,31 @@
     <script src="rubberDuckImages.js"></script>
     <script src="animeGirlImages.js"></script>
     <link rel="stylesheet" href="./css/style.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
+
 <body class=ncBody>
     <h1>Welcome to nCage+!</h1>
     <p class="ncHeader">This is the options page, where you can specify how you would like the extension to behave.</p>
-    <p class="ncHeader">You can go ahead and close this tab after you've set everything up. From here on out, the script will run on every webpage until the extension is disabled! You can always navigate back to this page from the extension settings.</p>
+    <p class="ncHeader">You can go ahead and close this tab after you've set everything up. From here on out, the script
+        will run on every webpage until the extension is disabled! You can always navigate back to this page from the
+        extension settings.</p>
     <div class="ncCategory">
         <h2>Image Replacement Configuration</h2>
         <div class=ncOptionAttribute>
             <label>Enable Image Replacement:</label>
-            <input id="enableImageReplacement" type="checkbox" checked="true"> 
+            <input id="enableImageReplacement" type="checkbox" checked="true">
         </div>
 
         <div class=ncOptionAttribute>
             <label>Image Replacement Rate:</label>
-            <input class="ncShortInput" id="imgReplaceProb" type="number" min="0" max="100" value="1"> <label>%</label><span class="helpText">(I recommend somewhere around 1% for <i>moderate</i> subtlety. Seriously!)</span>
+            <input class="ncShortInput" id="imgReplaceProb" type="number" min="0" max="100" value="1">
+            <label>%</label><span class="helpText">(I recommend somewhere around 1% for <i>moderate</i> subtlety.
+                Seriously!)</span>
         </div>
 
         <div class=ncOptionAttribute>
-        <label>Select a library of images to use:</label>
+            <label>Select a library of images to use:</label>
             <select name="libs" id="imageLibrarySelection">
                 <option value="nCage">Nicolas Cage</option>
                 <option value="rubberDucks">Rubber Ducks</option>
@@ -41,10 +46,13 @@
         </div>
 
         <div class="ncUrlInput" id="ncUrlInputContainer">
-            <p>This option will allow you to create a selection of images of your choosing, but it will take some preparation.<br/>
-            All you'll need is a list of publicly accessible URLs of the images you want to use (simpler URLs are more likely to work).<br/>
-            These can be images that you uploaded to the internet yourself, or images that others have uploaded.<br/>
-            Paste them below in a comma-separated list. With great power comes great responsibility!</p>
+            <p>This option will allow you to create a selection of images of your choosing, but it will take some
+                preparation.<br />
+                All you'll need is a list of publicly accessible URLs of the images you want to use (simpler URLs are
+                more likely to work).<br />
+                These can be images that you uploaded to the internet yourself, or images that others have
+                uploaded.<br />
+                Paste them below in a comma-separated list. With great power comes great responsibility!</p>
             <textarea id="ncTextareaContent" rows="8" cols="60"></textarea>
             <p id="ncTextAreaNotice"></p>
         </div>
@@ -59,15 +67,21 @@
                 <option value="604800000">Week</option>
             </select>
         </div>
-        
+
         <div id="ncStatus"></div>
-        <button class="ncSaveButton" id="saveImageOptions"><span class="material-icons ncSaveButtonIcon">save</span><span class="ncSaveButtonText">Save Settings</span></button>
+        <button class="ncSaveButton" id="saveImageOptions"><span
+                class="material-icons ncSaveButtonIcon">save</span><span class="ncSaveButtonText">Save
+                Settings</span></button>
     </div>
-    <button class="ncCloseButton" id="ncCloseTabButton"><span class="material-icons ncCloseButtonIcon">close</span><span class="ncCloseButtonText">Close this tab ;)</span></button>
+    <button class="ncCloseButton" id="ncCloseTabButton"><span class="material-icons ncCloseButtonIcon">close</span><span
+            class="ncCloseButtonText">Close this tab ;)</span></button>
     <div class="ncFooter">
-        <p>How was your experience? Do you have any funny stories to share? Feedback? Bug reports? Feature requests? <a href="https://chrome.google.com/webstore/detail/ncage%2B/blenoallcdijagcfhdbidjiimoandabh">Let me know!</a></p>
+        <p>How was your experience? Do you have any funny stories to share? Feedback? Bug reports? Feature requests? <a
+                href="https://chrome.google.com/webstore/detail/ncage%2B/blenoallcdijagcfhdbidjiimoandabh">Let me
+                know!</a></p>
     </div>
 
     <script src="options.js"></script>
 </body>
+
 </html>

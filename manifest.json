@@ -1,7 +1,10 @@
 {
     "name": "nCage+",
     "options_page": "options.html",
-    "permissions": ["storage", "alarms"],
+    "permissions": [
+        "storage",
+        "alarms"
+    ],
     "description": "Prank your friends and co-workers with this extension that will replace their webpage images while they browse the internet!",
     "version": "1.0.8",
     "manifest_version": 3,
@@ -13,7 +16,9 @@
             "matches": [
                 "<all_urls>"
             ],
-            "css": ["css/style.css"],
+            "css": [
+                "css/style.css"
+            ],
             "js": [
                 "ncageImages.js",
                 "rubberDuckImages.js",
@@ -23,7 +28,7 @@
             "run_at": "document_end"
         }
     ],
-    "icons": { 
+    "icons": {
         "16": "icon16.png",
         "48": "icon48.png",
         "128": "icon128.png"
