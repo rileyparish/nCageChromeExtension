@@ -1,5 +1,7 @@
 // init from chrome storage on page load, updated when changes are made to the textarea, but only saved to storage when the save button is clicked
 var curSessionCustomImages = [];
+var testImgSrcIndex = -1;
+const TEST_IMAGE_REF = "/images/replacementTester.jpg";
 
 // Saves options to chrome.storage
 async function saveImageOptions() {
@@ -85,7 +87,7 @@ function updateSelectionNotice() {
             noticeText = "Retains native images but adds a spin animation with a randomized speed and direction.";
             break;
         case "custom":
-            noticeText = "Create your own library using whatever images you want!";
+            noticeText = "Create your own library using any images you like!";
             populateTextArea(curSessionCustomImages);
     }
     document.getElementById("ncLibNotice").textContent = noticeText;
@@ -99,8 +101,8 @@ function closeTab() {
 
 function parseTextarea() {
     // get the text and remove newlines and whitespace
-    let textareaContent = document.getElementById("ncTextareaContent").value.replace(/\n/g, "").trim();
-    const urlCandidates = textareaContent.split(',');
+    let textareaContent = document.getElementById("ncTextareaContent").value.replace(/\n/g, "");
+    const urlCandidates = textareaContent.split(',').map(url => url.trim());
 
     const urlRegex = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]{0,61}[a-zA-Z\d])?)\.)+[a-zA-Z]{2,}|((\d{1,3}\.){3}\d{1,3})|(\[[0-9a-fA-F:]+\]))(:\d+)?(\/[-a-zA-Z\d%_.~+]*)*(\?[;&a-zA-Z\d%_.~+=-]*)?(#[-a-zA-Z\d_]*)?$/;
 
@@ -110,7 +112,14 @@ function parseTextarea() {
     document.getElementById("ncTextAreaNotice").style.color = curSessionCustomImages.length > 0 ? "green" : "red";
     document.getElementById("ncTextAreaNotice").textContent = `${curSessionCustomImages.length} valid urls extracted.`;
 
-    updateTestImage(curSessionCustomImages[curSessionCustomImages.length - 1]);
+    if (curSessionCustomImages.length > 0) {
+        // update the image to the last URL in the list
+        testImgSrcIndex = curSessionCustomImages.length - 1;
+        updateTestImage(curSessionCustomImages[testImgSrcIndex]);
+    } else {
+        updateTestImage(TEST_IMAGE_REF);
+    }
+    updateImageControls();
 }
 
 // change the test image src to verify that an image can be retrieved from the custom url
@@ -118,6 +127,42 @@ function updateTestImage(newSrc) {
     let testImage = document.getElementById("ncTestImg");
     // this is the same replacement logic used in imageReplacer.js
     testImage.setAttribute("style", `height:${testImage.height}px; width:${testImage.width}px; object-fit:cover; object-position:50% 35%; content:url(${newSrc});`);
+}
+
+function showNextTestImage() {
+    if (curSessionCustomImages.length === 0) {
+        return;
+    }
+    testImgSrcIndex = testImgSrcIndex + 1;
+    if (testImgSrcIndex >= curSessionCustomImages.length) {
+        // wrap to first image in list
+        testImgSrcIndex = 0;
+    }
+    updateTestImage(curSessionCustomImages[testImgSrcIndex]);
+    updateImageControls();
+}
+
+function showPrevTestImage() {
+    if (curSessionCustomImages.length === 0) {
+        return;
+    }
+    testImgSrcIndex = testImgSrcIndex - 1;
+    if (testImgSrcIndex < 0) {
+        // wrap to last image in list
+        testImgSrcIndex = curSessionCustomImages.length - 1;
+    }
+    updateTestImage(curSessionCustomImages[testImgSrcIndex]);
+    updateImageControls();
+}
+
+function updateImageControls() {
+    if (curSessionCustomImages.length > 0) {
+        document.getElementById("ncCurIndex").textContent = testImgSrcIndex + 1;
+        document.getElementById("ncSrcListLength").textContent = curSessionCustomImages.length;
+    } else {
+        document.getElementById("ncCurIndex").textContent = 0;
+        document.getElementById("ncSrcListLength").textContent = 0;
+    }
 }
 
 // Restores settings state using the preferences stored in chrome.storage.
@@ -128,7 +173,7 @@ async function restoreOptions() {
             let imgLibName = data.settings.imageReplacement.imgLibraryName;
             document.getElementById("imageLibrarySelection").value = imgLibName;
             // set the session's custom image library on page load
-            curSessionCustomImages = data.settings.imageReplacement.customImageLibrary;
+            curSessionCustomImages = data.settings.imageReplacement.customImageLibrary || [];
             replacementRate = data.settings.imageReplacement.imgReplaceProb;
             // round to 4 decimal places and drop the extra zeros at the end
             document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
@@ -140,7 +185,14 @@ async function restoreOptions() {
     await loadSettings;
     // update the UI appearance based on the state of current settings
     updateSelectionNotice();
-    updateTestImage(curSessionCustomImages[curSessionCustomImages.length - 1]);
+    if (curSessionCustomImages.length > 0) {
+        // update the image to the last URL in the list
+        testImgSrcIndex = curSessionCustomImages.length - 1;
+        updateTestImage(curSessionCustomImages[testImgSrcIndex]);
+    } else {
+        updateTestImage(TEST_IMAGE_REF);
+    }
+    updateImageControls();
 }
 
 function populateTextArea(urlList) {
@@ -160,4 +212,5 @@ document.getElementById('ncCloseTabButton').addEventListener('click', closeTab);
 // parse textarea and store valid URLs in curSessionCustomImages
 document.getElementById('ncTextareaContent').addEventListener('input', parseTextarea);
 
-// TODO: test to make sure nothing breaks on installation!!
+document.getElementById('ncNextImage').addEventListener('click', showNextTestImage);
+document.getElementById('ncPrevImage').addEventListener('click', showPrevTestImage);

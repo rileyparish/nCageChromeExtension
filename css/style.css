@@ -31,7 +31,7 @@
     margin-left: 50px;
 }
 
-.ncUrlInput p{
+.ncUrlInput p {
     margin-top: 0px;
 }
 
@@ -56,21 +56,57 @@
 }
 
 .ncLeftColumn {
-    flex: 2;
+    flex: 3;
 }
 
 .ncRightCol {
     /* center the image within the right column */
-    flex: 1;
+    flex: 2;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#ncTestImg {
-    height: 200px;
-    width: 200px;
+.ncImageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
+
+#ncTestImg {
+    max-height: 200px;
+    max-width: 200px;
+    border: 3px dashed #696969;
+}
+
+.ncTestImageControls {
+    margin-top: 7px;
+    user-select: none;
+}
+
+.ncControlsText {
+    text-decoration: none;
+    font-size: small;
+    text-align: center;
+    /* vertical-align: middle; */
+    padding: 4px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.ncControlsIcon {
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    padding: 2px;
+}
+
+.ncControlsIcon:hover {
+    color: #696969;
+    cursor: pointer;
+}
+
 .ncSaveButtonText {
     text-decoration: none;
     font-size: medium;
@@ -93,8 +129,8 @@
     margin-left: auto;
     display: block;
     margin-top: 60px;
-    background-color: #db8484;
-    border: none;
+    background-color: white;
+    border: 3px solid #696969;
     padding: 40px 100px;
     border-radius: 20px;
 }
@@ -103,7 +139,7 @@
     text-decoration: none;
     font-size: x-large;
     text-align: center;
-    color: white;
+    color: #696969;
     vertical-align: middle;
     padding: 2px;
 }
@@ -112,13 +148,13 @@
     text-decoration: none;
     font-size: 40px !important;
     text-align: center;
-    color: white;
+    color: #696969;
     vertical-align: middle;
     padding: 2px;
 }
 
 .ncCloseButton:hover {
-    background-color: #bd7171;
+    background-color: #ccc;
 }
 
 .ncCategory label {
@@ -161,7 +197,7 @@
     text-align: center;
     width: fit-content;
     padding: 10px 20px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .ncFooter p {
