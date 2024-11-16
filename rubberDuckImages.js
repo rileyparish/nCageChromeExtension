@@ -27,5 +27,5 @@ var rubberDuckImages = [
     "https://i.imgur.com/h55d66q.jpg",
     "https://i.imgur.com/LKGMLso.jpg",
     "https://i.imgur.com/DrkSFsE.jpg",
-    "https://i.imgur.com/dGTwDgF.jpg"    
+    "https://i.imgur.com/dGTwDgF.jpg"
 ];

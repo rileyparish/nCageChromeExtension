@@ -1,6 +1,6 @@
 /*CSS for the options page */
 .ncBody {
-    width: 60%;
+    width: 70%;
     display: block;
     margin-right: auto;
     margin-left: auto;
@@ -27,6 +27,19 @@
     text-align: center;
 }
 
+.ncUrlInput {
+    margin-left: 50px;
+}
+
+.ncUrlInput p {
+    margin-top: 0px;
+}
+
+#ncTextAreaNotice {
+    margin-left: 5px;
+    font-size: medium;
+}
+
 .ncCategory .ncSaveButton {
     margin: 10px;
     margin-left: 0px;
@@ -35,6 +48,63 @@
     padding: 15px 15px;
     display: inline-block;
     border-radius: 8px;
+}
+
+.ncFlexContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ncLeftColumn {
+    flex: 3;
+}
+
+.ncRightCol {
+    /* center the image within the right column */
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ncImageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#ncTestImg {
+    max-height: 200px;
+    max-width: 200px;
+    border: 3px dashed #696969;
+}
+
+.ncTestImageControls {
+    margin-top: 7px;
+    user-select: none;
+}
+
+.ncControlsText {
+    text-decoration: none;
+    font-size: small;
+    text-align: center;
+    /* vertical-align: middle; */
+    padding: 4px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.ncControlsIcon {
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    padding: 2px;
+}
+
+.ncControlsIcon:hover {
+    color: #696969;
+    cursor: pointer;
 }
 
 .ncSaveButtonText {
@@ -59,17 +129,17 @@
     margin-left: auto;
     display: block;
     margin-top: 60px;
-    background-color: #db8484;
-    border: none;
+    background-color: white;
+    border: 3px solid #696969;
     padding: 40px 100px;
-    border-radius: 8px;
+    border-radius: 20px;
 }
 
 .ncCloseButtonText {
     text-decoration: none;
     font-size: x-large;
     text-align: center;
-    color: white;
+    color: #696969;
     vertical-align: middle;
     padding: 2px;
 }
@@ -78,13 +148,13 @@
     text-decoration: none;
     font-size: 40px !important;
     text-align: center;
-    color: white;
+    color: #696969;
     vertical-align: middle;
     padding: 2px;
 }
 
 .ncCloseButton:hover {
-    background-color: #bd7171;
+    background-color: #ccc;
 }
 
 .ncCategory label {
@@ -106,7 +176,7 @@
 
 .helpText {
     font-size: small;
-    color:#d1a700;
+    color: #d1a700;
     margin-left: 10px;
 }
 
@@ -127,7 +197,7 @@
     text-align: center;
     width: fit-content;
     padding: 10px 20px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .ncFooter p {
@@ -137,12 +207,13 @@
 /* CSS for image rotation */
 @keyframes ncRotate {
     from {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
+
     to {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
+}
 
 /* CSS for censored image alteration */
 .ncCensoredContent {
