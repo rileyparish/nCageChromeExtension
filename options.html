@@ -46,7 +46,8 @@
             <span id="ncLibNotice" class="helpText"></span>
         </div>
 
-        <div class="ncFlexContainer" id="ncUrlInputContainer">
+        <!-- hide this section by default, display when the "custom" option is clicked -->
+        <div class="ncFlexContainer" id="ncUrlInputContainer" style="display: none;">
             <div class="ncUrlInput ncLeftColumn">
                 <p>This option will allow you to create a selection of images of your choosing, but it will take some
                     preparation.<br />
@@ -82,6 +83,11 @@
                 <option value="86400000">Day</option>
                 <option value="604800000">Week</option>
             </select>
+        </div>
+
+        <div class="ncMessage">
+            <label>Display a message when this page next loads:</label>
+            <input type="text" placeholder="(optional)" size="50" id="ncMessageInput">
         </div>
 
         <div id="ncStatus"></div>

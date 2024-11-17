@@ -10,6 +10,7 @@ var defaultOptions = {
             "customImageLibrary": [],
             "incrementValue": 0,
             "incrementInterval": 86400000,
+            "messageForVictim": "",
             "lastUpdate": 0
         }
     }

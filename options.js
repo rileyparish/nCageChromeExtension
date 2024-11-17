@@ -22,6 +22,7 @@ async function saveImageOptions() {
     settingsToSave.imgLibraryName = document.getElementById('imageLibrarySelection').value;
     settingsToSave.incrementValue = document.getElementById('incrementValue').value / 100;
     settingsToSave.incrementInterval = document.getElementById('incrementInterval').value;
+    settingsToSave.messageForVictim = document.getElementById('ncMessageInput').value;
     settingsToSave.lastUpdate = new Date().getTime();
 
     // if you're adding a new image library, make sure to add it to options.html as well so options.js can see it
@@ -72,7 +73,7 @@ function updateSelectionNotice() {
     let noticeText = "";
     switch (imgLibOption) {
         case "nCage":
-            noticeText = "The finest selection of Nicolas Cage images on the interwebs!";
+            noticeText = "The finest selection of Nicolas Cage compositions on the interwebs!";
             break;
         case "rubberDucks":
             noticeText = "Replace native images with (mostly) friendly rubber ducks!";
@@ -91,7 +92,7 @@ function updateSelectionNotice() {
             populateTextArea(curSessionCustomImages);
     }
     document.getElementById("ncLibNotice").textContent = noticeText;
-    // hide the text area unless the "custom" option is selected
+    // hide the textarea unless the "custom" option is selected
     document.getElementById("ncUrlInputContainer").style.display = imgLibOption === "custom" ? "flex" : "none";
 }
 
@@ -167,22 +168,25 @@ function updateImageControls() {
 
 // Restores settings state using the preferences stored in chrome.storage.
 async function restoreOptions() {
+    let curSettings;
     var loadSettings = new Promise(function (resolve, reject) {
         chrome.storage.sync.get(["settings"], function (data) {
-            document.getElementById("enableImageReplacement").checked = data.settings.imageReplacement.enableImgReplace;
-            let imgLibName = data.settings.imageReplacement.imgLibraryName;
-            document.getElementById("imageLibrarySelection").value = imgLibName;
-            // set the session's custom image library on page load
-            curSessionCustomImages = data.settings.imageReplacement.customImageLibrary || [];
-            replacementRate = data.settings.imageReplacement.imgReplaceProb;
-            // round to 4 decimal places and drop the extra zeros at the end
-            document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
-            document.getElementById("incrementValue").value = data.settings.imageReplacement.incrementValue * 100;
-            document.getElementById("incrementInterval").value = data.settings.imageReplacement.incrementInterval;
+            curSettings = data.settings.imageReplacement;
             resolve();
         })
     });
     await loadSettings;
+
+    document.getElementById("enableImageReplacement").checked = curSettings.enableImgReplace;
+    let imgLibName = curSettings.imgLibraryName;
+    document.getElementById("imageLibrarySelection").value = imgLibName;
+    // set the session's custom image library on page load
+    curSessionCustomImages = curSettings.customImageLibrary || [];
+    replacementRate = curSettings.imgReplaceProb;
+    // round to 4 decimal places and drop the extra zeros at the end
+    document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
+    document.getElementById("incrementValue").value = curSettings.incrementValue * 100;
+    document.getElementById("incrementInterval").value = curSettings.incrementInterval;
     // update the UI appearance based on the state of current settings
     updateSelectionNotice();
     if (curSessionCustomImages.length > 0) {
@@ -193,6 +197,11 @@ async function restoreOptions() {
         updateTestImage(TEST_IMAGE_REF);
     }
     updateImageControls();
+
+    if (curSettings.messageForVictim) {
+        alert(`You've been pranked! The perpetrator has left you the following message:\n${curSettings.messageForVictim}`)
+        document.getElementById('ncMessageInput').value = curSettings.messageForVictim;
+    }
 }
 
 function populateTextArea(urlList) {
