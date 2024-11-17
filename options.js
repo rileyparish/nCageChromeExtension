@@ -22,7 +22,7 @@ async function saveImageOptions() {
     settingsToSave.imgLibraryName = document.getElementById('imageLibrarySelection').value;
     settingsToSave.incrementValue = document.getElementById('incrementValue').value / 100;
     settingsToSave.incrementInterval = document.getElementById('incrementInterval').value;
-    settingsToSave.messageForVictim = document.getElementById('ncMessageInput').value;
+    settingsToSave.messageForVictim = document.getElementById('ncMessageInput').value || "";
     settingsToSave.lastUpdate = new Date().getTime();
 
     // if you're adding a new image library, make sure to add it to options.html as well so options.js can see it
@@ -183,7 +183,7 @@ async function restoreOptions() {
     // set the session's custom image library on page load
     curSessionCustomImages = curSettings.customImageLibrary || [];
     replacementRate = curSettings.imgReplaceProb;
-    // round to 4 decimal places and drop the extra zeros at the end
+    // round to 4 decimal places
     document.getElementById("imgReplaceProb").value = +(replacementRate * 100).toFixed(4);
     document.getElementById("incrementValue").value = curSettings.incrementValue * 100;
     document.getElementById("incrementInterval").value = curSettings.incrementInterval;
