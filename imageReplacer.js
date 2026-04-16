@@ -1,5 +1,6 @@
 let enableImgReplace = false;
 let imgReplaceProb = 0;
+let imgLibName = ""
 let imgLib = [];
 let numImages = 0;
 
@@ -10,6 +11,7 @@ async function init() {
         chrome.storage.sync.get(["settings"], function (data) {
             enableImgReplace = data.settings.imageReplacement.enableImgReplace;
             imgReplaceProb = data.settings.imageReplacement.imgReplaceProb;
+            imgLibName = data.settings.imageReplacement.imgLibraryName;
             imgLib = data.settings.imageReplacement.imgLibrary;
             resolve();
         })
@@ -42,24 +44,32 @@ function main() {
 
 function replaceImage(image) {
     // if the category is "censored" apply the CSS rules
-    if (imgLib === "censored") {
+    if (imgLibName === "censored") {
         censorImage(image);
-    } if (imgLib === "spinInPlace") {
+        return;
+    } if (imgLibName === "spinInPlace") {
         // generate a random animation duration between .5s and 20s:
         const animDuration = Math.random() * (20 - 0.5) + 0.5;
         const animDirection = Math.random() > .5 ? "normal" : "reverse";
         // <name of CSS function> <duration to complete in seconds> <progression type> <number of times to run> <clockwise/counterclockwise>
         image.style.animation = `ncRotate ${animDuration}s linear infinite ${animDirection}`;
+        return;
     } else {
-        newSrc = getRandomImage();
+        // select an image path from the current image library
+        let imagePath = getRandomImage();
+        // the custom library is composed of raw urls on the internet, so don't convert them to local storage
+        if(imgLibName != "custom"){
+            // if the image is bundled into the extension, convert to chrome runtime location
+            imagePath = chrome.runtime.getURL(getRandomImage());
+        }
         // this line uses CSS to keep the old size of the image (this is important if the original image doesn't have existing height and width attributes)
         // it scales and crops the replacement image to fit, and also sets the image content to be the replacement image
         // object-position:center;
-        image.setAttribute("style", `height:${image.height}px; width:${image.width}px; object-fit:cover; object-position:50% 35%; content:url(${newSrc});`);
+        image.setAttribute("style", `height:${image.height}px; width:${image.width}px; object-fit:cover; object-position:50% 35%; content:url(${imagePath});`);
         // `object-fit:cover` specifies how an image should be resized to fit its container and prevents image distortion
         // `object-position: horizontal vertical` specifies how the image should be centered if the replacement image is larger than the target image. 35% from the top is a decent average for the image sets.
         // also set the image src attribute for good measure (though it doesn't appear to be strictly necessary)
-        image.src = newSrc;
+        image.src = imagePath;
     }
 }
 

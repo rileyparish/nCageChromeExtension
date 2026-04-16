@@ -1,7 +1,7 @@
 // init from chrome storage on page load, updated when changes are made to the textarea, but only saved to storage when the save button is clicked
 var curSessionCustomImages = [];
 var testImgSrcIndex = -1;
-const TEST_IMAGE_REF = "/images/replacementTester.jpg";
+const TEST_IMAGE_REF = chrome.runtime.getURL("/images/replacementTester.jpg");
 
 // Saves options to chrome.storage
 async function saveImageOptions() {
@@ -42,6 +42,7 @@ async function saveImageOptions() {
         case "spinInPlace":
             settingsToSave.imgLibrary = "spinInPlace";
             break;
+        // TODO: add loading spinner library
         case "custom":
             settingsToSave.imgLibrary = curSessionCustomImages;
             // this way the custom list always gets preserved in settings
