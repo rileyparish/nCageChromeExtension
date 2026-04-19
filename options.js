@@ -42,7 +42,9 @@ async function saveImageOptions() {
         case "spinInPlace":
             settingsToSave.imgLibrary = "spinInPlace";
             break;
-        // TODO: add loading spinner library
+        case "loadingSpinner":
+            settingsToSave.imgLibrary = ["/images/loadingSpinner.webp"];
+            break;
         case "custom":
             settingsToSave.imgLibrary = curSessionCustomImages;
             // this way the custom list always gets preserved in settings
@@ -84,9 +86,12 @@ function updateSelectionNotice() {
             break;
         case "censored":
             noticeText = "Blurs webpage images and overlays a foreboding notice (this one's a little hit-and-miss :P ).";
-            break;
+            break;ikkkkkk``
         case "spinInPlace":
             noticeText = "Retains native images but adds a spin animation with a randomized speed and direction.";
+            break;
+        case "loadingSpinner":
+            noticeText = "Replaces native images with a \"loading\" spinner ;)";
             break;
         case "custom":
             noticeText = "Create your own library using any images you like!";
