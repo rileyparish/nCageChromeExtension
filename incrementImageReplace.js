@@ -16,7 +16,8 @@ chrome.runtime.onInstalled.addListener((object) => {
         loadDefaultOptions();
 
         // also open the options page for them on installation:
-        chrome.tabs.create({ url: "chrome-extension://blenoallcdijagcfhdbidjiimoandabh/options.html" }, function (tab) { });
+        let optionsUrl = chrome.runtime.getURL("") + "options.html";
+        chrome.tabs.create({ url: optionsUrl }, function (tab) { });
     }
 
     // create alarm after extension is installed/upgraded

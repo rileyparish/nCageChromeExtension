@@ -70,7 +70,7 @@ async function saveImageOptions() {
     });
 }
 
-// updates the selection description and
+// updates the selection description and hide/reveal custom URLs textbox
 function updateSelectionNotice() {
     let imgLibOption = document.getElementById('imageLibrarySelection').value;
     let noticeText = "";
@@ -86,7 +86,7 @@ function updateSelectionNotice() {
             break;
         case "censored":
             noticeText = "Blurs webpage images and overlays a foreboding notice (this one's a little hit-and-miss :P ).";
-            break;ikkkkkk``
+            break;
         case "spinInPlace":
             noticeText = "Retains native images but adds a spin animation with a randomized speed and direction.";
             break;

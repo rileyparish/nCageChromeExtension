@@ -56,20 +56,20 @@ function replaceImage(image) {
         return;
     } else {
         // select an image path from the current image library
-        let imagePath = getRandomImage();
+        let newSrcUrl = getRandomImage();
         // the custom library is composed of raw urls on the internet, so don't convert them to local storage
         if(imgLibName != "custom"){
             // if the image is bundled into the extension, convert to chrome runtime location
-            imagePath = chrome.runtime.getURL(getRandomImage());
+            newSrcUrl = chrome.runtime.getURL(newSrcUrl);
         }
         // this line uses CSS to keep the old size of the image (this is important if the original image doesn't have existing height and width attributes)
         // it scales and crops the replacement image to fit, and also sets the image content to be the replacement image
         // object-position:center;
-        image.setAttribute("style", `height:${image.height}px; width:${image.width}px; object-fit:cover; object-position:50% 35%; content:url(${imagePath});`);
+        image.setAttribute("style", `height:${image.height}px; width:${image.width}px; object-fit:cover; object-position:50% 35%; content:url(${newSrcUrl});`);
         // `object-fit:cover` specifies how an image should be resized to fit its container and prevents image distortion
         // `object-position: horizontal vertical` specifies how the image should be centered if the replacement image is larger than the target image. 35% from the top is a decent average for the image sets.
         // also set the image src attribute for good measure (though it doesn't appear to be strictly necessary)
-        image.src = imagePath;
+        image.src = newSrcUrl;
     }
 }
 
