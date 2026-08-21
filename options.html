@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Ncage+ Options</title>
+    <title>nCage+ Options</title>
     <!-- It's important to load the image libraries here so options.js can have access to them -->
     <script src="ncageImages.js"></script>
     <script src="rubberDuckImages.js"></script>
@@ -41,7 +41,7 @@
                 <option value="animeGirls">Anime Girls</option>
                 <option value="censored">Censored</option>
                 <option value="spinInPlace">Spin in place</option>
-                <option value="loadingSpinner">Loading Gif</option>
+                <option value="loadingSpinner">Loading GIF</option>
                 <option value="custom">Custom Library</option>
             </select>
             <span id="ncLibNotice" class="helpText"></span>
@@ -52,18 +52,45 @@
             <div class="ncUrlInput ncLeftColumn">
                 <p>This option will allow you to create a selection of images of your choosing, but it will take some
                     preparation.<br />
-                    All you'll need is a list of publicly accessible URLs of the images you want to use (simpler URLs
+                    All you'll need is a list of <b>publicly accessible</b> links to the images you want to use (simpler URLs
                     are
                     more likely to work).<br />
                     These can be images that you uploaded to the internet yourself, or images that others have
                     uploaded.<br />
                     Paste them below in a comma-separated list. With great power comes great responsibility!</p>
                 <textarea id="ncTextareaContent" rows="9" cols="70"></textarea>
-                <div id="ncTextAreaNotice"></div>
+                <div id="ncTextAreaNotice">
+                    <span id="ncNoticeText"></span>
+                    <span id="ncNoticeHelp" class="material-symbols-outlined ncHelpIcon" style="display:none;">help_outline
+                        <div class="ncHelpTooltip">
+                            <h3>Why did my URL(s) fail?</h3>
+                            <p>This error is visible because a network request was made to each of the URLs provided, and one or more of them failed to return an image in the response. This could be due to a number of factors:</p>
+                            <ul>
+                                <li>The URL is not publicly accessible (target server is privately hosted or requires authentication for access)</li>
+                                <li>The server returned an error response (e.g. 404)</li>
+                                <li>The server blocks hotlinking</li>
+                                <li>A slow/unstable network connection</li>
+                                <li>The link is invalid or is no longer active (link rot)</li>
+                                <li>The target location is valid but does not resolve to an image</li>
+                              </ul>
+                              <h3>What can I do about it?</h3>
+                              <ul>
+                                <li>Try finding a different link to the same image ("Open image in new tab", or "Copy image address")</li>
+                                <li>Find another instance of the image that's hosted on a different site</li>
+                                <li>Download the image yourself and upload it to a network location that is publicly accessible</li>
+                                <li>Choose a different image that is similar</li>
+                              </ul>
+                        </div>
+                    </span>
+                </div>
+                <details id="ncFailedUrlsDetails" style="display:none;">
+                    <summary>Show failed URLs</summary>
+                    <ul id="ncFailedUrlsList"></ul>
+                </details>
             </div>
             <div class="ncColumn ncRightCol">
                 <div class="ncImageContainer">
-                    <img id="ncTestImg" src="/images/replacementTester.jpg" alt="Bad URL; could not retrieve image.">
+                    <img id="ncTestImg" src="/images/replacementTester.jpg" alt="Bad URL; could not retrieve image. This entry will be discarded on save.">
                     <div class="ncTestImageControls">
                         <span class="material-symbols-outlined ncControlsIcon" id="ncPrevImage">keyboard_arrow_left</span>
                         <span class="ncControlsText">

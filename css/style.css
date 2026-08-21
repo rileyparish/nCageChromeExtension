@@ -38,6 +38,46 @@
 #ncTextAreaNotice {
     margin-left: 5px;
     font-size: medium;
+    display: flex;
+    align-items: center;
+}
+
+.ncHelpIcon {
+    font-size: 16px !important;
+    margin-left: 4px;
+    cursor: help;
+    position: relative;
+    overflow: visible;
+}
+
+.ncHelpTooltip {
+    font-family: sans-serif;
+    overflow-wrap: break-word;
+    overflow: visible;
+    white-space: normal;
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    width: 700px;
+    font-size: 12px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 10;
+}
+
+.ncHelpTooltip ul {
+    margin: 4px 0 0 0;
+    padding-left: 18px;
+}
+
+.ncHelpIcon:hover .ncHelpTooltip {
+    opacity: 1;
 }
 
 .ncCategory .ncSaveButton {

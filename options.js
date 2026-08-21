@@ -1,6 +1,7 @@
 // init from chrome storage on page load, updated when changes are made to the textarea, but only saved to storage when the save button is clicked
 var curSessionCustomImages = [];
 var testImgSrcIndex = -1;
+const urlValidityCache = new Map(); // url -> true (loads image) | false (errors)
 const TEST_IMAGE_REF = chrome.runtime.getURL("/images/replacementTester.jpg");
 
 // Saves options to chrome.storage
@@ -106,18 +107,73 @@ function closeTab() {
     window.close();
 }
 
-function parseTextarea() {
-    // get the text and remove newlines and whitespace
+// called on every edit to the text area. Parses URL submissions, tests image retrieval, and filters out entries that fail to resolve
+async function parseTextarea() {
     let textareaContent = document.getElementById("ncTextareaContent").value.replace(/\n/g, "");
-    const urlCandidates = textareaContent.split(',').map(url => url.trim());
+    const urlCandidates = textareaContent.split(',').map(url => url.trim()).filter(url => url.length > 0);
 
-    const urlRegex = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]{0,61}[a-zA-Z\d])?)\.)+[a-zA-Z]{2,}|((\d{1,3}\.){3}\d{1,3})|(\[[0-9a-fA-F:]+\]))(:\d+)?(\/[-a-zA-Z\d%_.~+]*)*(\?[;&a-zA-Z\d%_.~+=-]*)?(#[-a-zA-Z\d_]*)?$/;
+    document.getElementById("ncTextAreaNotice").style.color = "gray";
+    const pendingTextEl = document.getElementById("ncNoticeText");
+    if (pendingTextEl) pendingTextEl.textContent = `Validating ${urlCandidates.length} url(s)...`;
+    const pendingHelpEl = document.getElementById("ncNoticeHelp");
+    if (pendingHelpEl) pendingHelpEl.style.display = "none";
 
-    // filter out items that don't match a URL regex
-    curSessionCustomImages = urlCandidates.filter(url => urlRegex.test(url));
+    const IMAGE_LOAD_TIMEOUT_MS = 8000;
 
-    document.getElementById("ncTextAreaNotice").style.color = curSessionCustomImages.length > 0 ? "green" : "red";
-    document.getElementById("ncTextAreaNotice").textContent = `${curSessionCustomImages.length} valid urls extracted.`;
+    // test each candidate by attempting to load it as an image, using cache to skip already-known URLs
+    const results = await Promise.all(urlCandidates.map(url => {
+        if (urlValidityCache.has(url)) {
+            return Promise.resolve(urlValidityCache.get(url) ? url : null);
+        }
+        return new Promise(resolve => {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => {
+                controller.abort();
+                urlValidityCache.set(url, false);
+                resolve(null);
+            }, IMAGE_LOAD_TIMEOUT_MS);
+
+            const finish = (result) => {
+                clearTimeout(timeoutId);
+                urlValidityCache.set(url, result !== null);
+                resolve(result);
+            };
+
+            const testWithImage = () => {
+                const img = new Image();
+                img.onload = () => finish(url);
+                img.onerror = () => finish(null);
+                img.src = url;
+            };
+
+            // HEAD check catches HTTP errors (e.g. 404) that the Image API cannot detect.
+            // Fall through to Image test if the server blocks CORS or doesn't support HEAD (405).
+            fetch(url, { method: 'HEAD', signal: controller.signal })
+                .then(r => (r.ok || r.status === 405) ? testWithImage() : finish(null))
+                .catch(e => { if (e.name !== 'AbortError') testWithImage(); });
+        });
+    }));
+
+    // this now contains only URLs successfully returned a valid image
+    curSessionCustomImages = results.filter(url => url !== null);
+
+    // update the UI with the results
+    const failedUrls = urlCandidates.filter(url => !curSessionCustomImages.includes(url));
+    const failCount = failedUrls.length;
+    document.getElementById("ncTextAreaNotice").style.color = failCount === 0 ? "green" : "red";
+    const discardNotice = failCount > 0 ? " Unsuccessful URLs will be discarded." : "";
+    const noticeTextEl = document.getElementById("ncNoticeText");
+    if (noticeTextEl) noticeTextEl.textContent = `${curSessionCustomImages.length}/${urlCandidates.length} URLs succeeded.${discardNotice}`;
+    const helpEl = document.getElementById("ncNoticeHelp");
+    if (helpEl) helpEl.style.display = failCount > 0 ? "inline" : "none";
+
+    const failedDetails = document.getElementById("ncFailedUrlsDetails");
+    const failedList = document.getElementById("ncFailedUrlsList");
+    if (failedDetails && failedList) {
+        failedDetails.style.display = failCount > 0 ? "block" : "none";
+        failedDetails.removeAttribute("open");
+        failedList.innerHTML = failedUrls.map(url => `<li>${url}</li>`).join("");
+    }
 
     if (curSessionCustomImages.length > 0) {
         // update the image to the last URL in the list
